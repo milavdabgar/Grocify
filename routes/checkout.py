@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-import mysql.connector
+import sqlite3
 
 bp = Blueprint('checkout', __name__)
 
@@ -9,8 +9,8 @@ def checkout():
     if 'email' not in session:
         return redirect(url_for('signin'))
 
-    # Connect to the MySQL database
-    cnx = mysql.connector.connect(**db_config)
+    # Connect to the SQLite database
+    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
     cursor = cnx.cursor()
 
     # Retrieve cart data for the user from the database
@@ -20,7 +20,7 @@ def checkout():
     JOIN Product P ON CP.ProductId = P.Id
     JOIN Cart C ON CP.CartId = C.Id
     JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = %s
+    WHERE U.Email = ?
     """
     cursor.execute(select_query, (session['email'],))
     cart_products = cursor.fetchall()
@@ -32,7 +32,7 @@ def checkout():
     JOIN Product P ON CP.ProductId = P.Id
     JOIN Cart C ON CP.CartId = C.Id
     JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = %s
+    WHERE U.Email = ?
     """
     cursor.execute(total_query, (session['email'],))
     total_price = cursor.fetchone()[0]
@@ -41,7 +41,7 @@ def checkout():
     select_shipping_query = """
     SELECT * FROM Shipping
     INNER JOIN User ON Shipping.UserId = User.Id
-    WHERE User.Email = %s
+    WHERE User.Email = ?
     """
     cursor.execute(select_shipping_query, (session['email'],))
     shipping_info = cursor.fetchall()

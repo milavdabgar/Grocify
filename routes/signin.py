@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-import mysql.connector
+import sqlite3
 from config import db_config
 
 bp = Blueprint('signin', __name__)
@@ -11,12 +11,12 @@ def signin():
         email = request.form['email']
         password = request.form['password']
 
-        # Connect to the MySQL database
-        cnx = mysql.connector.connect(**db_config)
+        # connect to the SQLite database
+        cnx = sqlite3.connect('databases/fresh_basket_sample.db')
         cursor = cnx.cursor()
 
         # Check if the email and password match
-        select_query = "SELECT * FROM User WHERE Email = %s AND Password = %s"
+        select_query = "SELECT * FROM User WHERE Email = ? AND Password = ?"
         cursor.execute(select_query, (email, password))
         user = cursor.fetchone()
 

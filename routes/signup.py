@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-import mysql.connector
+import sqlite3
 from config import db_config
 
 bp = Blueprint('signup', __name__)
@@ -12,12 +12,12 @@ def signup():
         email = request.form['email']
         password = request.form['password']
 
-        # Connect to the MySQL database
-        cnx = mysql.connector.connect(**db_config)
+        # Connect to the SQLite database
+        cnx = sqlite3.connect('databases/fresh_basket_sample.db')
         cursor = cnx.cursor()
 
         # Check if the email is already registered
-        select_query = "SELECT * FROM User WHERE Email = %s"
+        select_query = "SELECT * FROM User WHERE Email = ?"
         cursor.execute(select_query, (email,))
         user = cursor.fetchone()
 
@@ -27,7 +27,7 @@ def signup():
             return render_template('signup.html', error=error)
         else:
             # Insert the new user into the database
-            insert_query = "INSERT INTO User (Name, Email, Password) VALUES (%s, %s, %s)"
+            insert_query = "INSERT INTO User (Name, Email, Password) VALUES (?, ?, ?)"
             cursor.execute(insert_query, (name, email, password))
             cnx.commit()
 

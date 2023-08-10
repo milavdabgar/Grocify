@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, session
-import mysql.connector
+import sqlite3
 
 bp = Blueprint('home', __name__)
 
@@ -17,8 +17,8 @@ def home():
         return redirect(url_for('signin.signin'))
 
 def get_cart_count():
-    # Connect to the MySQL database
-    cnx = mysql.connector.connect(**db_config)
+    # Connect to the SQLite database
+    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
     cursor = cnx.cursor()
 
     # Retrieve the cart count for the user
@@ -27,7 +27,7 @@ def get_cart_count():
     FROM CartProduct CP
     JOIN Cart C ON CP.CartId = C.Id
     JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = %s
+    WHERE U.Email = ?
     """
     cursor.execute(select_query, (session['email'],))
     cart_count = cursor.fetchone()[0]

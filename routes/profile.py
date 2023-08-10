@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-import mysql.connector
+import sqlite3
 
 bp = Blueprint('profile', __name__)
 
@@ -7,12 +7,12 @@ bp = Blueprint('profile', __name__)
 def profile():
     # Check if the user is authenticated
     if 'email' in session:
-        # Connect to the MySQL database
-        cnx = mysql.connector.connect(**db_config)
+        # Connect to the SQLite database
+        cnx = sqlite3.connect('databases/fresh_basket_sample.db')
         cursor = cnx.cursor()
 
         # Retrieve the user data from the database
-        select_query = "SELECT * FROM User WHERE Email = %s"
+        select_query = "SELECT * FROM User WHERE Email = ?"
         cursor.execute(select_query, (session['email'],))
         user = cursor.fetchone()
 

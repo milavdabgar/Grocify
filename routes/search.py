@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for
-import mysql.connector
+from flask import Blueprint, render_template, session, redirect, url_for, request
+import sqlite3
 
 bp = Blueprint('search', __name__)
 
@@ -13,12 +13,12 @@ def search():
         # Handle the case when no query is provided
         return redirect(url_for('products'))
 
-    # Connect to the MySQL database
-    cnx = mysql.connector.connect(**db_config)
+    # Connect to the SQLite database
+    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
     cursor = cnx.cursor()
 
     # Search for products matching the query
-    search_query = "SELECT * FROM Product WHERE Name LIKE %s OR Description LIKE %s"
+    search_query = "SELECT * FROM Product WHERE Name LIKE ? OR Description LIKE ?"
     pattern = f'%{query}%'
     cursor.execute(search_query, (pattern, pattern))
     products = cursor.fetchall()

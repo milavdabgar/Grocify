@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for
-import mysql.connector
+from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
+import sqlite3
 
 bp = Blueprint('add_to_cart', __name__)
 
@@ -11,12 +11,12 @@ def add_to_cart():
     # Retrieve the product ID from the request form
     product_id = request.form.get('product_id')
 
-    # Connect to the MySQL database
-    cnx = mysql.connector.connect(**db_config)
+    # Connect to the SQLite database
+    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
     cursor = cnx.cursor()
 
     # Retrieve the user's cart ID
-    select_cart_query = "SELECT Id FROM Cart WHERE UserId = (SELECT Id FROM User WHERE Email = %s)"
+    select_cart_query = "SELECT Id FROM Cart WHERE UserId = (SELECT Id FROM User WHERE Email = ?)"
     cursor.execute(select_cart_query, (session['email'],))
     cart_row = cursor.fetchone()
 
@@ -25,7 +25,7 @@ def add_to_cart():
         cart_id = cart_row[0]
     else:
         # If the user does not have a cart, create a new cart
-        insert_cart_query = "INSERT INTO Cart (UserId) SELECT Id FROM User WHERE Email = %s"
+        insert_cart_query = "INSERT INTO Cart (UserId) SELECT Id FROM User WHERE Email = ?"
         cursor.execute(insert_cart_query, (session['email'],))
         cnx.commit()
 
@@ -33,7 +33,7 @@ def add_to_cart():
         cart_id = cursor.lastrowid
 
     # Insert the product into the user's cart
-    insert_cart_product_query = "INSERT INTO CartProduct (CartId, ProductId) VALUES (%s, %s)"
+    insert_cart_product_query = "INSERT INTO CartProduct (CartId, ProductId) VALUES (?, ?)"
     cart_product_data = (cart_id, product_id)
     cursor.execute(insert_cart_product_query, cart_product_data)
     cnx.commit()

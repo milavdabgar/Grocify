@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for
-import mysql.connector
+from flask import Blueprint, render_template, session, redirect, url_for, request
+import sqlite3
 
 bp = Blueprint('shipping', __name__)
 
@@ -13,12 +13,12 @@ def shipping():
         if 'delete_shipping' in request.form:
             # Delete shipping information
             shipping_id = request.form.get('delete_shipping')
-            # Connect to the MySQL database
-            cnx = mysql.connector.connect(**db_config)
+            # Connect to the SQLite database
+            cnx = sqlite3.connect('databases/fresh_basket_sample.db')
             cursor = cnx.cursor()
-            
+
             # Delete the shipping information from the database
-            delete_shipping_query = "DELETE FROM Shipping WHERE Id = %s"
+            delete_shipping_query = "DELETE FROM Shipping WHERE Id = ?"
             cursor.execute(delete_shipping_query, (shipping_id,))
             cnx.commit()
 
@@ -38,19 +38,19 @@ def shipping():
             postal_code = request.form.get('postal_code')
             country = request.form.get('country')
 
-            # Connect to the MySQL database
-            cnx = mysql.connector.connect(**db_config)
+            # Connect to the SQLite database
+            cnx = sqlite3.connect('databases/fresh_basket_sample.db')
             cursor = cnx.cursor()
 
             # Retrieve the user's ID
-            select_user_query = "SELECT Id FROM User WHERE Email = %s"
+            select_user_query = "SELECT Id FROM User WHERE Email = ?"
             cursor.execute(select_user_query, (session['email'],))
             user_id = cursor.fetchone()[0]
 
             # Insert the shipping information into the shipping table
             insert_shipping_query = """
             INSERT INTO Shipping (UserId, Full_Name, Street_Address, City, State_Province, Postal_Code, Country)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """
             shipping_data = (user_id, full_name, street_address, city, state_province, postal_code, country)
             cursor.execute(insert_shipping_query, shipping_data)
@@ -60,7 +60,7 @@ def shipping():
             select_shipping_query = """
             SELECT * FROM Shipping
             INNER JOIN User ON Shipping.UserId = User.Id
-            WHERE User.Email = %s
+            WHERE User.Email = ?
             """
             cursor.execute(select_shipping_query, (session['email'],))
             shipping_info = cursor.fetchall()
@@ -74,15 +74,15 @@ def shipping():
 
     # If it's a GET request, render the shipping information form
     # Retrieve existing shipping info from database
-    # Connect to the MySQL database
-    cnx = mysql.connector.connect(**db_config)
+    # Connect to the SQLite database
+    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
     cursor = cnx.cursor()
-    
+
     # Retrieve shipping info from the database
     select_shipping_query = """
     SELECT * FROM Shipping
     INNER JOIN User ON Shipping.UserId = User.Id
-    WHERE User.Email = %s
+    WHERE User.Email = ?
     """
     cursor.execute(select_shipping_query, (session['email'],))
     shipping_info = cursor.fetchall()
