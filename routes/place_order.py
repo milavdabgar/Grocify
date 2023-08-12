@@ -1,10 +1,6 @@
-from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+from flask import Blueprint, session, redirect, url_for
 import mysql.connector
-import bcrypt
-import requests
-import os
-from config import *
-from controllers import get_cart_count
+from config import db_config
 
 bp = Blueprint('place_order', __name__)
 

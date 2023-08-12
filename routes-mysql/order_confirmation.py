@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-import sqlite3
+import mysql.connector
+from config import db_config
+from controllers import get_cart_count
 
 bp = Blueprint('order_confirmation', __name__)
 
@@ -7,20 +9,20 @@ bp = Blueprint('order_confirmation', __name__)
 def order_confirmation(order_id):
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('signin'))
+        return redirect(url_for('signin.signin'))
 
-    # Connect to the SQLite database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+    # Connect to the MySQL database
+    cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
 
     # Retrieve the order details from the database
     select_order_query = """
     SELECT O.Id, P.Name, P.Description, P.Price, P.Image, P.Category
-    FROM "Order" O
+    FROM `Order` O
     JOIN OrderProduct OP ON O.Id = OP.OrderId
     JOIN Product P ON OP.ProductId = P.Id
     JOIN User U ON O.UserId = U.Id
-    WHERE U.Email = ? AND O.Id = ?
+    WHERE U.Email = %s AND O.Id = %s
     """
     cursor.execute(select_order_query, (session['email'], order_id))
     order_products = cursor.fetchall()
@@ -28,11 +30,11 @@ def order_confirmation(order_id):
     # Calculate the total price of the order
     total_query = """
     SELECT SUM(P.Price)
-    FROM "Order" O
+    FROM `Order` O
     JOIN OrderProduct OP ON O.Id = OP.OrderId
     JOIN Product P ON OP.ProductId = P.Id
     JOIN User U ON O.UserId = U.Id
-    WHERE U.Email = ? AND O.Id = ?
+    WHERE U.Email = %s AND O.Id = %s
     """
     cursor.execute(total_query, (session['email'], order_id))
     total_price = cursor.fetchone()[0]
@@ -41,7 +43,7 @@ def order_confirmation(order_id):
     select_shipping_query = """
     SELECT * FROM Shipping
     INNER JOIN User ON Shipping.UserId = User.Id
-    WHERE User.Email = ?
+    WHERE User.Email = %s
     """
     cursor.execute(select_shipping_query, (session['email'],))
     shipping_info = cursor.fetchall()

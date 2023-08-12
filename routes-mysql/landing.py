@@ -4,4 +4,4 @@ bp = Blueprint('landing', __name__)
 
 @bp.route('/')
 def landing():
-    return render_template('landing.html')
+    return  render_template('landing.html')

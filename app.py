@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import mysql.connector
 import bcrypt

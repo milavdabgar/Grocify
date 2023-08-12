@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, render_template, session
+from flask import Blueprint, render_template, session, redirect, url_for
 
 bp = Blueprint('admin_panel', __name__)
 
@@ -8,4 +8,4 @@ def admin_panel():
     if 'email' in session and session['email'] == 'admin@frb.com':
         return render_template('admin_panel.html')
     else:
-        return redirect(url_for('signin'))
+        return redirect(url_for('signin.signin'))

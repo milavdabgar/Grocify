@@ -1,9 +1,6 @@
-from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+from flask import Blueprint, render_template
 import mysql.connector
-import bcrypt
-import requests
-import os
-from config import *
+from config import db_config
 from controllers import get_cart_count
 
 bp = Blueprint('products', __name__)

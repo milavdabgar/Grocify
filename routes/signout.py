@@ -1,10 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
-import mysql.connector
-import bcrypt
-import requests
-import os
-from config import *
-from controllers import get_cart_count
+from flask import Blueprint, session, redirect, url_for
 
 bp = Blueprint('signout', __name__)
 
@@ -14,4 +8,4 @@ def signout():
     session.clear()
 
     # Redirect to the sign-in page
-    return redirect(url_for('signin,signin'))
+    return redirect(url_for('signin.signin'))

@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from controllers import get_cart_count
 
 bp = Blueprint('recipe', __name__)
 

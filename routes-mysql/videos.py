@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template
+import requests
 import os
+from controllers import get_cart_count
 
 bp = Blueprint('videos', __name__)
 
