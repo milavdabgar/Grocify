@@ -1,12 +1,17 @@
-from flask import Blueprint, render_template
-import sqlite3
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('products', __name__)
 
 @bp.route('/products')
 def products():
     # Connect to the MySQL database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+    cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
 
     # Retrieve product data from the database

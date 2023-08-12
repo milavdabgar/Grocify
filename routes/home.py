@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, session, redirect, url_for, session
-import sqlite3
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('home', __name__)
 
@@ -15,25 +20,3 @@ def home():
             return render_template('index.html', cart_count=cart_count)
     else:
         return redirect(url_for('signin.signin'))
-
-def get_cart_count():
-    # Connect to the SQLite database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
-    cursor = cnx.cursor()
-
-    # Retrieve the cart count for the user
-    select_query = """
-    SELECT COUNT(CP.ProductId)
-    FROM CartProduct CP
-    JOIN Cart C ON CP.CartId = C.Id
-    JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = ?
-    """
-    cursor.execute(select_query, (session['email'],))
-    cart_count = cursor.fetchone()[0]
-
-    # Close the cursor and connection
-    cursor.close()
-    cnx.close()
-
-    return cart_count

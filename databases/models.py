@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databases/fresh_basket.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket.sqlite'
 db = SQLAlchemy(app)
 
 class Cart(db.Model):
@@ -60,5 +60,3 @@ class User(db.Model):
 
 with app.app_context():
     db.create_all()
-# db.create_all()
-   # No need to explicitly commit or close the connection with Flask SQLAlchemy

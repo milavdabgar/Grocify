@@ -1,38 +1,51 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for
-import sqlite3
-from config import db_config
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('signin', __name__)
+
+print(db_config)
 
 @bp.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
-        # Retrieve the form data
-        email = request.form['email']
-        password = request.form['password']
+        # Retrieve form data
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-        # connect to the SQLite database
-        cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+        # Connect to the MySQL database
+        cnx = mysql.connector.connect(**db_config)
         cursor = cnx.cursor()
 
-        # Check if the email and password match
-        select_query = "SELECT * FROM User WHERE Email = ? AND Password = ?"
-        cursor.execute(select_query, (email, password))
-        user = cursor.fetchone()
+        # Retrieve the hashed password from the database
+        query = "SELECT Password FROM User WHERE Email = %s"
+        cursor.execute(query, (email,))
+        result = cursor.fetchone()
 
-        if user:
-            # Email and password match
-            session['email'] = email
+        if result:
+            hashed_password = result[0]
+            # Verify the password
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
+                # If credentials are valid, create a session for the user
+                session['email'] = email
 
-            # Close the cursor and connection
-            cursor.close()
-            cnx.close()
+                # Redirect to the home page
+                return redirect(url_for('home.home'))
 
-            # Redirect to the home page
-            return redirect(url_for('home.home'))
-        else:
-            # Email and password do not match
-            error = 'Invalid email or password'
-            return render_template('signin.html', error=error)
-    else:
-        return render_template('signin.html')
+        # User not found or invalid credentials
+        return render_template('signup.html')
+
+        # Close the cursor and connection
+        cursor.close()
+        cnx.close()
+
+    # If it's a GET request and the user is already signed in, redirect to the home page
+    if 'email' in session:
+        return redirect(url_for('home.home'))
+
+    # If it's a GET request and the user is not signed in, render the sign-in page
+    return render_template('signin.html')

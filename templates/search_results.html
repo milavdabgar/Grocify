@@ -23,10 +23,10 @@
       </div>
       <nav class="show-menu">
         <ul>
-          <li><a href="{{ url_for('home') }}">Home</a></li>
-          <li><a href="{{ url_for('products') }}">Shop</a></li>
-          <li><a href="{{ url_for('recipe') }}">Recipes</a></li>
-          <li><a href="{{ url_for('videos') }}">Videos</a></li>
+          <li><a href="{{ url_for('home.home') }}">Home</a></li>
+          <li><a href="{{ url_for('products.products') }}">Shop</a></li>
+          <li><a href="{{ url_for('recipe.recipe') }}">Recipes</a></li>
+          <li><a href="{{ url_for('videos.videos') }}">Videos</a></li>
           <li>
             <form action="/search" method="GET">
               <input type="search" name="query" placeholder="Search the grocery shop...">
@@ -37,10 +37,10 @@
       </nav>
       <div class="user">
         <div class="profile">
-          <a href="{{ url_for('profile') }}"><i class="material-icons icon-large">account_circle</i>Account</a>
+          <a href="{{ url_for('profile.profile') }}"><i class="material-icons icon-large">account_circle</i>Account</a>
         </div>
         <div class="cart">
-          <a href="{{ url_for('cart') }}">
+          <a href="{{ url_for('cart.cart') }}">
             <i class="material-icons">shopping_cart</i>
             {% if cart_count > 0 %}
             <span id="cart-count">{{ cart_count }}</span>
@@ -72,7 +72,7 @@
             <p>No products found.</p>
         {% endif %}
         <hr>
-        <a href="{{ url_for('products') }}">Back to Products</a>
+        <a href="{{ url_for('products.products') }}">Back to Products</a>
     </section>
     <footer>
         <div class="container">

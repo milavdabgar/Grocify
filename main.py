@@ -1,32 +1,23 @@
-#!/usr/bin/python3
-
-from flask import Flask, render_template, request, session, redirect, url_for, jsonify
-from routes import landing, home, recipe, products, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
-import os
+from flask import Flask, render_template
+from routes.home import home_bp
+from routes.about import about_bp
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('APP_SECRET_KEY')
 
-app.register_blueprint(landing.bp)
-app.register_blueprint(home.bp)
-# app.register_blueprint(home.bp, url_prefix='/home', endpoint='home.home')
-app.register_blueprint(recipe.bp)
-app.register_blueprint(products.bp)
-app.register_blueprint(signup.bp)
-app.register_blueprint(signin.bp)
-app.register_blueprint(profile.bp)
-app.register_blueprint(signout.bp)
-app.register_blueprint(search.bp)
-app.register_blueprint(cart.bp)
-app.register_blueprint(add_to_cart.bp)
-app.register_blueprint(remove_from_cart.bp)
-app.register_blueprint(checkout.bp)
-app.register_blueprint(place_order.bp)
-app.register_blueprint(order_confirmation.bp)
-app.register_blueprint(shipping.bp)
-app.register_blueprint(videos.bp)
-app.register_blueprint(admin_panel.bp)
+app.register_blueprint(home_bp, url_prefix='/home')
+app.register_blueprint(about_bp, url_prefix='/about')
+
+# Define route for the root URL ("/")
+# @app.route('/')
+# def root():
+#     return "Welcome to the root page!"
+
+@app.route('/')
+def landing():
+    return  render_template('landing.html')
+    # return "Welcome to the root page!"
 
 
+# Run the Flask app
 if __name__ == '__main__':
     app.run()

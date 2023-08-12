@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request
-import sqlite3
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('search', __name__)
 
@@ -11,14 +16,14 @@ def search():
     # Check if the query is None or empty
     if not query or query.strip() == '':
         # Handle the case when no query is provided
-        return redirect(url_for('products'))
+        return redirect(url_for('products.products'))
 
-    # Connect to the SQLite database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+    # Connect to the MySQL database
+    cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
 
     # Search for products matching the query
-    search_query = "SELECT * FROM Product WHERE Name LIKE ? OR Description LIKE ?"
+    search_query = "SELECT * FROM Product WHERE Name LIKE %s OR Description LIKE %s"
     pattern = f'%{query}%'
     cursor.execute(search_query, (pattern, pattern))
     products = cursor.fetchall()
@@ -32,3 +37,4 @@ def search():
 
     # Render the template and pass the product data to it
     return render_template('search_results.html', products=products, query=query, cart_count=cart_count)
+

@@ -60,10 +60,10 @@
       <p>Total Price: Ksh {{ total_price }}</p>
     </div>
     <div class="buttons-container">
-      <form class="total-price" action="{{ url_for('place_order') }}" method="POST">
+      <form class="total-price" action="{{ url_for('place_order.place_order') }}" method="POST">
         <button type="submit">Place Order</button>
       </form>
-      <form action="{{ url_for('products') }}">
+      <form action="{{ url_for('products.products') }}">
         <button type="submit">Continue Shopping</button>
       </form>
     </div>

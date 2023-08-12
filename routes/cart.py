@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, session, redirect, url_for
-import sqlite3
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('cart', __name__)
 
@@ -7,10 +12,10 @@ bp = Blueprint('cart', __name__)
 def cart():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('signin'))
+        return redirect(url_for('signin.signin'))
 
-    # Connect to the SQLite database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+    # Connect to the MySQL database
+    cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
 
     # Retrieve cart data for the user from the database
@@ -20,7 +25,7 @@ def cart():
     JOIN Product P ON CP.ProductId = P.Id
     JOIN Cart C ON CP.CartId = C.Id
     JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = ?
+    WHERE U.Email = %s
     """
     cursor.execute(select_query, (session['email'],))
     cart_products = cursor.fetchall()
@@ -32,16 +37,16 @@ def cart():
     JOIN Product P ON CP.ProductId = P.Id
     JOIN Cart C ON CP.CartId = C.Id
     JOIN User U ON C.UserId = U.Id
-    WHERE U.Email = ?
+    WHERE U.Email = %s
     """
     cursor.execute(total_query, (session['email'],))
     total_price = cursor.fetchone()[0]
 
-    # Retrieve shipping info from database
+     # Retrieve shipping info from database
     select_shipping_query = """
     SELECT * FROM Shipping
     INNER JOIN User ON Shipping.UserId = User.Id
-    WHERE User.Email = ?
+    WHERE User.Email = %s
     """
     cursor.execute(select_shipping_query, (session['email'],))
     shipping_info = cursor.fetchall()

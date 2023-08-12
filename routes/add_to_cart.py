@@ -1,22 +1,27 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-import sqlite3
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, jsonify
+import mysql.connector
+import bcrypt
+import requests
+import os
+from config import *
+from controllers import get_cart_count
 
 bp = Blueprint('add_to_cart', __name__)
 
 @bp.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     if 'email' not in session:
-        return redirect(url_for('signin'))
+        return redirect(url_for('signin.signin'))
 
     # Retrieve the product ID from the request form
     product_id = request.form.get('product_id')
 
-    # Connect to the SQLite database
-    cnx = sqlite3.connect('databases/fresh_basket_sample.db')
+    # Connect to the MySQL database
+    cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
 
     # Retrieve the user's cart ID
-    select_cart_query = "SELECT Id FROM Cart WHERE UserId = (SELECT Id FROM User WHERE Email = ?)"
+    select_cart_query = "SELECT Id FROM Cart WHERE UserId = (SELECT Id FROM User WHERE Email = %s)"
     cursor.execute(select_cart_query, (session['email'],))
     cart_row = cursor.fetchone()
 
@@ -25,7 +30,7 @@ def add_to_cart():
         cart_id = cart_row[0]
     else:
         # If the user does not have a cart, create a new cart
-        insert_cart_query = "INSERT INTO Cart (UserId) SELECT Id FROM User WHERE Email = ?"
+        insert_cart_query = "INSERT INTO Cart (UserId) SELECT Id FROM User WHERE Email = %s"
         cursor.execute(insert_cart_query, (session['email'],))
         cnx.commit()
 
@@ -33,7 +38,7 @@ def add_to_cart():
         cart_id = cursor.lastrowid
 
     # Insert the product into the user's cart
-    insert_cart_product_query = "INSERT INTO CartProduct (CartId, ProductId) VALUES (?, ?)"
+    insert_cart_product_query = "INSERT INTO CartProduct (CartId, ProductId) VALUES (%s, %s)"
     cart_product_data = (cart_id, product_id)
     cursor.execute(insert_cart_product_query, cart_product_data)
     cnx.commit()
