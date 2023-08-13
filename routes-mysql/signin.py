@@ -5,8 +5,6 @@ from config import db_config
 
 bp = Blueprint('signin', __name__)
 
-print(db_config)
-
 @bp.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':

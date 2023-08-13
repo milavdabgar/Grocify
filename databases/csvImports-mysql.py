@@ -1,8 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import csv
+import urllib.parse
+
+password = 'Seagate@123'
+encoded_password = urllib.parse.quote_plus(password)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:"Seagate@123"@localhost/fresh_basket_sample'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://root:{encoded_password}@localhost/fresh_basket_sample'
+
 db = SQLAlchemy(app)
 
 class Cart(db.Model):
@@ -56,7 +65,30 @@ class User(db.Model):
     Email = db.Column(db.String(255), nullable=False, unique=True)
     Password = db.Column(db.String(255), nullable=False)
     Phone = db.Column(db.String(20), nullable=False)
+    
+# Define a dictionary to map each table to its corresponding CSV file
+table_csv_mapping = {
+    Product: 'imports/Product.csv',
+    User: 'imports/User.csv',
+    Shipping: 'imports/Shipping.csv',
+    Cart: 'imports/Cart.csv',
+    CartProduct: 'imports/CartProduct.csv',
+    Order: 'imports/Order.csv',
+    OrderProduct: 'imports/OrderProduct.csv',                    
+}
 
-
+# Iterate over each table and CSV file
+# Iterate over each table and CSV file
 with app.app_context():
     db.create_all()
+    for table, csv_file in table_csv_mapping.items():
+        # Read the CSV file
+        with open(csv_file, 'r') as file:
+            reader = csv.DictReader(file)
+            data = [dict(row) for row in reader]
+
+        # Insert the data into the table
+        for row in data:
+            obj = table(**row)
+            db.session.add(obj)
+        db.session.commit()

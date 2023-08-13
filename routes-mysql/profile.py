@@ -37,4 +37,3 @@ def profile():
         return render_template('profile.html', user=user, shipping_info=shipping_info, cart_count=cart_count)
     else:
         return redirect(url_for('signin.signin'))
-

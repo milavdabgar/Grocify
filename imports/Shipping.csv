@@ -1,8 +1,8 @@
-Id,UserId,Full_Name,Street_Address,City,State_Province,Postal_Code,Country
+id,user_id,full_name,street_address,city,state_province,postal_code,country
 10,17,Teddy G,Langas,Nakuru,Mombasa,20200,Kenya
 11,18,James W,Kiamunyi,Molo,Rift-Valley,20100,Kenya
-13,20,John Kelly,Mangu,Kericho,Rift-Valley,011000,South Africa
+13,20,John Kelly,Mangu,Kericho,Rift-Valley,11000,South Africa
 14,21,Motty Blue,Wall street,New York,Boston,120543,United States
 31,16,John Foe,Kiamunyi,Meru,Central,40320,Kenya
-32,22,Joe Kamau,Karen,Nairobi,Central,00100,Kenya
-34,23,Kate Mambo,Kiamunyi,Mombasa,Mombasa,00500,Kenya
+32,22,Joe Kamau,Karen,Nairobi,Central,100,Kenya
+34,23,Kate Mambo,Kiamunyi,Mombasa,Mombasa,500,Kenya

@@ -1,4 +1,4 @@
-id,name,description,price,image,category,product_id
+Id,Name,Description,Price,Image,Category,product_id
 5,Bananas,"Deliciously sweet and rich in potassium, bananas are a nutritious and energizing fruit that satisfies your taste buds and supports your active lifestyle.",99,product-images/bananas.jpg,Fruit,3
 6,Milk,"Milk is a nutrient-rich food that is an excellent source of protein, calcium, and other essential vitamins and minerals.",119.99,product-images/milk.jpg,Dairy,4
 7,Eggs,"Nutritious and versatile, these protein-rich gems are perfect for breakfast or baking, adding delicious flavor to your meals.",459.99,product-images/eggs.jpg,Dairy,5
