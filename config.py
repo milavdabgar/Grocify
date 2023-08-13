@@ -1,19 +1,37 @@
-#!/usr/bin/python3
 import os
+from dotenv import load_dotenv
 
-# # # Flask configuration
-os.environ["YT_API_KEY"] = "AIzaSyDNY4WotVJc8paQgIvHMy83BCYZFXBPwvQ"
-os.environ["APP_SECRET_KEY"] = "mjd"
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
-os.environ["DB_HOST"] = "localhost"
-os.environ["DB_USER"] = "root"
-os.environ["DB_PASSWORD"] = "Seagate@123"
-os.environ["DB_DATABASE"] = "fresh_basket"
-
-# MySQL connection config
-db_config = {
-    'host': os.environ.get('DB_HOST'),
-    'user': os.environ.get('DB_USER'),
-    'password': os.environ.get('DB_PASSWORD'),
-    'database': os.environ.get('DB_DATABASE')
-}
+class Config(object):
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
+        'postgres://', 'postgresql://') or \
+        'sqlite:///' + os.path.join(basedir, 'app.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    
+    
+class mySQLapp(Config):
+    import urllib.parse
+    
+    mysql_host = os.environ.get('DB_HOST')
+    mysql_user = os.environ.get('DB_USER')
+    mysql_password = os.environ.get('DB_PASSWORD')
+    mysql_database = os.environ.get('DB_DATABASE')   
+    mysql_encoded_password = urllib.parse.quote_plus(mysql_password)
+    
+    # MySQL connection for sqlAlchemy
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
+    f'mysql+mysqlconnector://root:{mysql_encoded_password}@localhost/fresh_basket_sample'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+     
+    # MySQL connection for raw SQL
+    db_config = {
+        'host': mysql_host,
+        'user': mysql_user,
+        'password': mysql_password,
+        'database': mysql_database
+    }
