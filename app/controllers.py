@@ -1,19 +1,22 @@
-from flask import session, current_app
-from app.models import *
+from flask import session, current_app as app
+from app.models import CartProduct, Cart, User
 
 def get_cart_count():
     # Check if the user is authenticated
-    if 'email' in session:
-        # Retrieve the cart count for the user
-        cart_count = CartProduct.query \
-            .join(Cart) \
-            .join(User) \
-            .filter(User.email == session['email']) \
-            .count()
+    if session.get('email'):
+        try:
+            # Retrieve the cart count for the user
+            count = CartProduct.query \
+                .join(Cart) \
+                .join(User) \
+                .filter(User.email == session['email']) \
+                .count()
 
-        # Log the cart count
-        current_app.logger.info(f"Cart count: {cart_count}")
+            return count
+        except Exception as e:
+            # Handle any exceptions that may occur
+            # Log the exception using app.logger
+            app.logger.exception("Error retrieving cart count")
+            return None
 
-        return cart_count
-
-    pass
+    return None
