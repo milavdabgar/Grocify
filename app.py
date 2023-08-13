@@ -3,10 +3,10 @@ from routes import landing, home, recipe, products, signup, signin, profile, sig
 import os
 from config import *
 from extensions import db
-import urllib.parse
+# import urllib.parse
 
-password = 'Seagate@123'
-encoded_password = urllib.parse.quote_plus(password)
+# password = 'Seagate@123'
+# encoded_password = urllib.parse.quote_plus(password)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
