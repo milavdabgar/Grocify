@@ -58,12 +58,12 @@
         </tr>
         {% for ship in shipping_info %}
         <tr>
-          <td>{{ ship[2] }}</td>
-          <td>{{ ship[3] }}</td>
-          <td>{{ ship[4] }}</td>
-          <td>{{ ship[5] }}</td>
-          <td>{{ ship[6] }}</td>
-          <td>{{ ship[7] }}</td>
+          <td>{{ ship.full_name }}</td>
+          <td>{{ ship.street_address }}</td>
+          <td>{{ ship.city }}</td>
+          <td>{{ ship.state_province }}</td>
+          <td>{{ ship.postal_code }}</td>
+          <td>{{ ship.country }}</td>
           <td>
             <form method="POST" action="/shipping">
               <input type="hidden" name="delete_shipping" value="{{ ship[0] }}">

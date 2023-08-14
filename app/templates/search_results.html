@@ -19,11 +19,11 @@
         <ul class="product-list">
             {% for product in products %}
                 <li class="product-item">
-                    <img src="{{ url_for('static', filename=product[4]) }}" alt="{{ product[1] }}">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
                     <div class="product-info">
-                        <h3>{{ product[1] }}</h3>
-                        <p class="description">{{ product[2] }}</p>
-                        <p class="price">Price: {{ product[3] }}</p>
+                        <h3>{{ product.name }}</h3>
+                        <p class="description">{{ product.description }}</p>
+                        <p class="price">Price: {{ product.price }}</p>
                     </div>
                 </li>
             {% endfor %}

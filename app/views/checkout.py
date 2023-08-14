@@ -19,7 +19,7 @@ def checkout():
         .filter(User.email == session['email']) \
         .all()
 
-    cart_product_tuples = [tuple(item) for item in cart_products]
+    # cart_product_tuples = [tuple(item) for item in cart_products]
 
     # Calculate the total price of the cart
     total_price = db.session.query(db.func.sum(Product.price))\
@@ -36,6 +36,6 @@ def checkout():
     
     # Render the template and pass the cart data to it
     return render_template('checkout.html',
-                           cart_products=cart_product_tuples,
+                           cart_products=cart_products,
                            total_price=total_price,
                            shipping_info=shipping_info)

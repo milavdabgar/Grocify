@@ -20,7 +20,7 @@ def order_confirmation(order_id):
     ).join(User, Order.user_id == User.id).filter(
         User.email == session['email'], Order.id == order_id
     ).all()
-
+    
     # Calculate the total price of the order
     total_price = db.session.query(db.func.sum(Product.price)).\
         join(OrderProduct, OrderProduct.product_id == Product.id).\

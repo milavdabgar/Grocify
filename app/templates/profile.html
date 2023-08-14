@@ -17,17 +17,17 @@
 <h1>Profile</h1>
 <div class="profile-container">
     <span class="material-icons icon-large">account_circle</span>
-    <h2>Welcome, {{ user[1] }}!</h2>
-    <p>Email: {{ user[2] }}</p>
-    <p>Phone: {{ user[4] }}</p>
+    <h2>Welcome, {{ user.name }}!</h2>
+    <p>Email: {{ user.email }}</p>
+    <p>Phone: {{ user.phone }}</p>
     {% for ship in shipping_info %}
       <h2>Shipping Information</h2>
-      <p>Full Name: {{ ship[2] }}</p>
-      <p>Street Address: {{ ship[3] }}</p>
-      <p>City: {{ ship[4] }}</p>
-      <p>State/Province: {{ ship[5] }}</p>
-      <p>Postal Code: {{ ship[6] }}</p>
-      <p>Country: {{ ship[7] }}</p>
+      <p>Full Name: {{ ship.full_name }}</p>
+      <p>Street Address: {{ ship.street_address }}</p>
+      <p>City: {{ ship.city }}</p>
+      <p>State/Province: {{ ship.state_province }}</p>
+      <p>Postal Code: {{ ship.postal_code }}</p>
+      <p>Country: {{ ship.country }}</p>
     {% endfor %}
     <form action="/signout">
       <button>SignOut</button>

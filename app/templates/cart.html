@@ -27,15 +27,15 @@
         <tbody>
             {% for product in cart_products %}
             <tr>
-                <td>{{ product[0] }}</td>
-                <td><b>{{ product[1] }}</b></td>
-                <td>{{ product[2] }}</td>
-                <td>INR {{ product[3] }}</td>
-                <td><img src="{{ url_for('static', filename=product[4]) }}" alt="{{ product[4] }}"></td>
-                <td>{{ product[5] }}</td>
+                <td>{{ product.id }}</td>
+                <td><b>{{ product.name }}</b></td>
+                <td>{{ product.description }}</td>
+                <td>INR {{ product.price }}</td>
+                <td><img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.image }}"></td>
+                <td>{{ product.category }}</td>
                 <td>
                     <form action="{{ url_for('remove_from_cart.remove_from_cart') }}" method="POST">
-                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
                         <button type="submit">Remove</button>
                     </form>
                 </td>
