@@ -11,7 +11,7 @@ def videos():
     api_key = os.environ.get('YT_API_KEY')
 
     # Define the search query for cooking videos
-    search_query = 'African meals'
+    search_query = 'Indian Cooking Recipes'
 
     # Make a request to the YouTube API
     url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&part=snippet&type=video&q={search_query}'
