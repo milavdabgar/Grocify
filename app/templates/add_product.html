@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/signin.css') }}">
+{% endblock %}
+
+{% block title %}
+    Grocify: Add Product
+{% endblock %}
+
+{% block content %}
+
+<h1>Add Product</h1>
+<div class="container">
+<form id="signin-form" method="POST" action="{{ url_for('add_product.add_product') }}">
+  {{ form.csrf_token }}
+  {{ form.name.label }} {{ form.name }}<br><br>
+  {{ form.description.label }} {{ form.description }}<br><br>
+  {{ form.price.label }} {{ form.price }}<br><br>
+  {{ form.image.label }} {{ form.image }}<br><br>
+  {{ form.category.label }} {{ form.category }}<br><br>
+  <input type="submit" value="Add Product">
+</form>
+</div>
+
+{% endblock %}

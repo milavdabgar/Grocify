@@ -27,7 +27,6 @@ class Product(db.Model):
     price = db.Column(db.Numeric(10, 2), nullable=False)
     image = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
-    product_id = db.Column(db.String(255), nullable=False)
     
 class Shipping(db.Model):
     __tablename__ = 'Shipping'
@@ -103,13 +102,13 @@ class OrderProduct(db.Model):
 
 # Define a dictionary to map each table to its corresponding CSV file
 table_csv_mapping = {
-    Cart: 'imports/Cart.csv',
-    CartProduct: 'imports/CartProduct.csv',
-    Order: 'imports/Order.csv',
-    OrderProduct: 'imports/OrderProduct.csv',
-    Product: 'imports/Product.csv',
-    Shipping: 'imports/Shipping.csv',
-    User: 'imports/User.csv',
+    Cart: 'extra/imports/Cart.csv',
+    CartProduct: 'extra/imports/CartProduct.csv',
+    Order: 'extra/imports/Order.csv',
+    OrderProduct: 'extra/imports/OrderProduct.csv',
+    Product: 'extra/imports/Product.csv',
+    Shipping: 'extra/imports/Shipping.csv',
+    User: 'extra/imports/User.csv',
 }
 
 # Iterate over each table and CSV file

@@ -16,7 +16,24 @@ class Product(db.Model):
     price = db.Column(db.Numeric(10, 2), nullable=False)
     image = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
-    product_id = db.Column(db.String(255), nullable=False)
+    
+    def json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': str(self.price),
+            'image': self.image,
+            'category': self.category
+        }
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
     
 class Shipping(db.Model):
     __tablename__ = 'Shipping'

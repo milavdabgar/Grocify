@@ -5,12 +5,13 @@ from flask import Flask
 
 from config import *
 from app.extensions import *
-from app.views import landing, home, recipe, products, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
+from app.views import add_product, landing, home, recipe, products, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
+from app.api.products import ProductResource
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    
+    api = Api(app)
     db.init_app(app) 
     with app.app_context():
         db.create_all()
@@ -35,6 +36,10 @@ def create_app():
     app.register_blueprint(shipping.bp)
     app.register_blueprint(videos.bp)
     app.register_blueprint(admin_panel.bp)
+    
+    app.register_blueprint(add_product.add_product_bp)
+    
+    api.add_resource(ProductResource, '/product/<int:product_id>')
     
     if not app.debug and not app.testing:
         if app.config['LOG_TO_STDOUT']:
