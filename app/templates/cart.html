@@ -30,7 +30,7 @@
                 <td>{{ product[0] }}</td>
                 <td><b>{{ product[1] }}</b></td>
                 <td>{{ product[2] }}</td>
-                <td>Ksh {{ product[3] }}</td>
+                <td>INR {{ product[3] }}</td>
                 <td><img src="{{ url_for('static', filename=product[4]) }}" alt="{{ product[4] }}"></td>
                 <td>{{ product[5] }}</td>
                 <td>
@@ -44,7 +44,7 @@
         </tbody>
     </table>
 
-    <p class="total-price">Total Price: Ksh {{ total_price }}</p>
+    <p class="total-price">Total Price: INR {{ total_price }}</p>
 
     <div class="buttons">
         <form action="{{ url_for('shipping.shipping') }}" method="GET">

@@ -14,7 +14,7 @@
     <div class="payment-container">
       <h2>Payment</h2>
       <div class="payment-img"></div>
-      <p><b>Total Price: Ksh {{ total_price }}</b></p>
+      <p><b>Total Price: INR {{ total_price }}</b></p>
     </div>
     <div class="ship-container">
       {% for ship in shipping_info %}
@@ -46,14 +46,14 @@
             <td>{{ product[0] }}</td>
             <td><b>{{ product[1] }}</b></td>
             <td>{{ product[2] }}</td>
-            <td>Ksh {{ product[3] }}</td>
+            <td>INR {{ product[3] }}</td>
             <td><img src="{{ url_for('static', filename=product[4]) }}" alt="{{ product[1] }}"></td>
             <td>{{ product[5] }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-      <p>Total Price: Ksh {{ total_price }}</p>
+      <p>Total Price: INR {{ total_price }}</p>
     </div>
     <div class="buttons-container">
       <form class="total-price" action="{{ url_for('place_order.place_order') }}" method="POST">

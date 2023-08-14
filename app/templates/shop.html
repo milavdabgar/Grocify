@@ -36,7 +36,7 @@
             <img src="{{ url_for('static', filename=product[4]) }}" alt="{{ product[1] }}">
             <h3>{{ product[1] }}</h3>
             <p>{{ product[2] }}</p>
-            <p class="price">Price: Ksh {{ product[3] }}</p>
+            <p class="price">Price: INR {{ product[3] }}</p>
             <button onclick="addToCart('{{ product[0] }}')">Add to Cart</button>
         </li>
         {% endfor %}

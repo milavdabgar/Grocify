@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/signin.css') }}">
     <script src="{{ url_for('static', filename='scripts/signin.js') }}"></script>
-    <title>Fresh Basket</title>
+    <title>Grocify: Signin</title>
 </head>
 <body>
     <header>
@@ -14,7 +14,7 @@
     </header>
     <div class="container">
         <img src="{{ url_for('static', filename='images/signin.jpg') }}" alt="signin.jpg">
-        <h1>Sign In to Fresh Basket</h1>
+        <h1>Sign In to Grocify</h1>
         <form id="signin-form" method="POST" action="{{ url_for('signin.signin') }}">
             <input type="text" id="email" name="email" placeholder="Email" required>
             <input type="text" id="phone" name="phone" placeholder="Phone" required>
@@ -26,7 +26,7 @@
     </div>
     <footer>
         <div class="footer-bottom">
-            <p>© 2023 Fresh Basket. All Rights Reserved.</p>
+            <p>© 2023 Grocify. All Rights Reserved.</p>
         </div>
     </footer>
 </body>

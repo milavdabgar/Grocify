@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/signup.css') }}">
-    <title>Fresh Basket: Sign Up</title>
+    <title>Grocify: Sign Up</title>
 </head>
 <body>
     <div class="container">
         <img src="{{ url_for('static', filename='images/signup.jpg') }}" alt="Signup Image">
-        <h1>Sign Up to Fresh Basket</h1>
+        <h1>Sign Up to Grocify</h1>
         <form id="signin-form" action="signup" method="POST">
             <input type="text" id="name" name="name" placeholder="Name" required>
             <input type="email" id="email" name="email" placeholder="Email" required>
@@ -22,7 +22,7 @@
     </div>
     <footer>
         <div class="footer-bottom">
-            <p>© 2023 Fresh Basket. All Rights Reserved.</p>
+            <p>© 2023 Grocify. All Rights Reserved.</p>
         </div>
     </footer>
 </body>
