@@ -27,7 +27,7 @@ def create_app():
     app.register_blueprint(signout.bp)
     app.register_blueprint(search.bp)
     app.register_blueprint(cart.bp)
-    app.register_blueprint(add_to_cart.bp)
+    app.register_blueprint(add_to_cart.add_to_cart_bp)
     app.register_blueprint(remove_from_cart.bp)
     app.register_blueprint(checkout.bp)
     app.register_blueprint(place_order.bp)
