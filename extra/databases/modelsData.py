@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///grocify_sample.sqlite'
 db = SQLAlchemy(app)
 
 class Cart(db.Model):

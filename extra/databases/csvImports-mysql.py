@@ -7,10 +7,10 @@ password = 'Seagate@123'
 encoded_password = urllib.parse.quote_plus(password)
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fresh_basket_sample.sqlite'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:"Seagate@123"@localhost/fresh_basket_sample'
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://root:{encoded_password}@localhost/fresh_basket_sample'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///grocify_sample.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///grocify_sample.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:"Seagate@123"@localhost/grocify_sample'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://root:{encoded_password}@localhost/grocify_sample'
 
 db = SQLAlchemy(app)
 

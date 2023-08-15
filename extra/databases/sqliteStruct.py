@@ -1,7 +1,7 @@
 import sqlite3
 
 # Connect to the database (create it if it doesn't exist)
-conn = sqlite3.connect('databases/fresh_basket.db')
+conn = sqlite3.connect('databases/grocify.db')
 
 # Create a cursor object to execute SQL commands
 cursor = conn.cursor()

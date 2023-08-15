@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `fresh_basket` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `fresh_basket`;
+CREATE DATABASE  IF NOT EXISTS `grocify` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `grocify`;
 -- MySQL dump 10.13  Distrib 8.0.33, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: fresh_basket
+-- Host: 127.0.0.1    Database: grocify
 -- ------------------------------------------------------
 -- Server version	8.0.33-0ubuntu0.22.04.4
 
