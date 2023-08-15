@@ -12,7 +12,7 @@ def landing():
 def dashboard():
     # Check if the user is authenticated
     if 'email' in session:
-        if session['email'] == 'admin@frb.com':
+        if session['email'] == 'admin@grocify.com':
             return redirect(url_for('home_routes.admin_panel'))
         else:
             # Retrieve the cart count using SQLAlchemy
@@ -24,7 +24,7 @@ def dashboard():
 @bp.route('/admin', methods=['GET'])
 def admin_panel():
     # Check if the user is authenticated as an admin
-    if 'email' in session and session['email'] == 'admin@frb.com':
+    if 'email' in session and session['email'] == 'admin@grocify.com':
         return render_template('home_admin.html')
     else:
         return redirect(url_for('auth_routes.signin'))

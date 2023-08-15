@@ -53,7 +53,7 @@ body {
   }
   
   input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #383464;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -89,7 +89,7 @@ body {
   }
 
   .a-link {
-    color: #4CAF50;
+    color: #383464;
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
