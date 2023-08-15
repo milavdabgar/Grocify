@@ -36,7 +36,7 @@ header .container2 {
 header .button {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #ff4d4f;
+    background-color: #383464;
     color: #fff;
     border-radius: 4px;
     text-decoration: none;
@@ -46,7 +46,7 @@ header .button {
 }
 
 header .button:hover {
-    background-color: #e6263e;
+    background-color: #615bad;
 }
 
 header nav {
@@ -181,13 +181,13 @@ p {
 }
 
 .social-links a:hover {
-    color: #635bff;
+    color: #383464;
 }
 
 .button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #635bff;
+    background-color: #383464;
     color: #fff;
     border-radius: 4px;
     text-decoration: none;
@@ -197,7 +197,7 @@ p {
 }
 
 .button:hover {
-    background-color: #4e44c8;
+    background-color: #615bad;
 }
 
 @media (max-width: 768px) {

@@ -32,8 +32,6 @@
             <ul>
               <li><a href="{{ url_for('home_routes.dashboard') }}">Home</a></li>
               <li><a href="{{ url_for('product_routes.shop') }}">Shop</a></li>
-              <li><a href="{{ url_for('recipe_routes.recipe') }}">Recipes</a></li>
-              <li><a href="{{ url_for('recipe_routes.videos') }}">Videos</a></li>
               <li>
                 <form action="/search" method="GET">
                   <input type="search" name="query" placeholder="Search the grocery shop...">
@@ -66,53 +64,11 @@
     <!-- Core Block content ends here -->
 
     <!-- Common footer content goes here -->
-    <footer>
-        <div class="container">
-          <div class="footer-logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Grocify Logo">
-          </div>
-          <div class="footer-columns">
-            <div class="footer-column">
-              <h3>Grocify</h3>
-              <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
-              </ul>
-            </div>
-            <div class="footer-column">
-              <h3>Categories</h3>
-              <ul>
-                <li><a href="#">Fresh Produce</a></li>
-                <li><a href="#">Meat & Poultry</a></li>
-                <li><a href="#">Beverages</a></li>
-                <li><a href="#">Bakery & Bread </a></li>
-              </ul>
-            </div>
-            <div class="footer-column">
-              <h3>Follow Us</h3>
-              <ul class="social-media-icons">
-                <li><a href="https://web.facebook.com/profile.php?id=100089080427306"><img src="{{ url_for('static', filename='images/facebook1.svg') }}" alt="facebook"></a></li>
-                  <li><a href="https://twitter.com/Theotsori"><img src="{{ url_for('static', filename='images/twitter1.svg') }}" alt="twitter"></a></li>
-                  <li><a href="https://github.com/theotsori"><img src="{{ url_for('static', filename='images/github1.svg') }}" alt="github"></a></li>
-                  <li><a href="https://wa.me/message/XPS4G47REHWYD1"><img src="{{ url_for('static', filename='images/whatsapp1.svg') }}" alt="whatsapp"></a></li>
-              </ul>
-            </div>
-            <div class="footer-column">
-                <h3>The Team</h3>
-                <ul class="social-media-icons">
-                  <li><a href="https://web.facebook.com/profile.php?id=100089080427306"><img src="{{ url_for('static', filename='images/facebook.svg') }}" alt="facebook"></a></li>
-                  <li><a href="https://twitter.com/Theotsori"><img src="{{ url_for('static', filename='images/twitter.svg') }}" alt="twitter"></a></li>
-                  <li><a href="https://github.com/theotsori"><img src="{{ url_for('static', filename='images/github.svg') }}" alt="github"></a></li>
-                  <li><a href="https://wa.me/message/XPS4G47REHWYD1"><img src="{{ url_for('static', filename='images/whatsapp.svg') }}" alt="whatsapp"></a></li>
-                </ul>
-            </div>
-          </div>
-          <div class="footer-bottom">
-            <p>© 2023 Grocify. All Rights Reserved.</p>
-          </div>
-        </div>
-    </footer>
+<footer class="footer">
+  <div class="logo">
+    <a href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></a>
+  </div>
+</footer>
+
 </body>
 </html>

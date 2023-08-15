@@ -47,7 +47,7 @@ body {
 
 #category-list li.active {
   font-weight: bold;
-  color: #4caf50;
+  color: #615bad;
 }
 
 #product-list {
@@ -98,7 +98,7 @@ body {
 }
 
 button {
-  background-color: #4caf50;
+  background-color: #383464;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -110,7 +110,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #615bad;
 }
 
 /* Media queries for small screens */

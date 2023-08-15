@@ -53,7 +53,7 @@ nav a {
 }
 
 nav a:hover {
-  color: #ff6f00;
+  color: #615bad;
 }
 
 nav form {
@@ -72,7 +72,7 @@ nav input[type="search"] {
 }
 
 nav button[type="submit"] {
-  background-color: #ff6f00;
+  background-color: #383464;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -83,7 +83,7 @@ nav button[type="submit"] {
 }
 
 nav button[type="submit"]:hover {
-  background-color: #333;
+  background-color: #615bad;
 }
 
 .user {
@@ -107,7 +107,7 @@ nav button[type="submit"]:hover {
 
 .user .profile a:hover,
 .user .cart a:hover {
-  color: #f44336;
+  color: #615bad;
 }
 
 .user .profile i,
@@ -117,7 +117,7 @@ nav button[type="submit"]:hover {
 }
 
 #cart-count {
-  background-color: #f44336;
+  background-color: #615bad;
   color: #fff;
   font-size: 12px;
   padding: 2px 6px;

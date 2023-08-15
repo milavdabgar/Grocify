@@ -16,14 +16,14 @@ body {
   top: 10px;
   left: 10px;
   padding: 6px 10px;
-  background-color: #4CAF50;
+  background-color: #383464;
   color: white;
   text-decoration: none;
   border-radius: 4px;
 }
 
 .back-button:hover {
-  background-color: #45a049;
+  background-color: #615bad;
 }  
 
 .container {
@@ -52,7 +52,7 @@ input[type="password"] {
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #383464;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -63,7 +63,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #615bad;
 }
 
 img {
@@ -96,7 +96,7 @@ p {
 }
 
 .a-link:hover {
-  color: orange;
+  color: #615bad;
 }
 
 .b-link {
@@ -109,7 +109,7 @@ p {
 }
 
 .b-link:hover {
-  color: orange;
+  color: #615bad;
 }
 
 /* Media Query for smaller screens */

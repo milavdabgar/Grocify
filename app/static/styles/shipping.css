@@ -43,14 +43,14 @@ button {
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #383464;
   color: #ffffff;
   font-size: 16px;
   cursor: pointer;
 }
 
 button {
-  background-color: #ff7b00;
+  background-color: #383464;
 }
 
 .info-container {

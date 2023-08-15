@@ -40,7 +40,7 @@ body {
   }
 
   .profile-container form button {
-    background-color: #ff6f00;
+    background-color: #383464;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -51,5 +51,5 @@ body {
   }
   
   .profile-container form button:hover {
-  background-color: #333;
+  background-color: #615bad;
 }

@@ -5,7 +5,7 @@ from flask import Flask
 
 from config import *
 from app.extensions import *
-from app.routes import auth_routes, home_routes, product_routes, cart_routes, order_routes, recipe_routes
+from app.routes import auth_routes, home_routes, product_routes, cart_routes, order_routes
 from app.api import ProductResource
 
 def create_app():
@@ -23,7 +23,7 @@ def create_app():
     app.register_blueprint(product_routes.bp)
     app.register_blueprint(cart_routes.bp)
     app.register_blueprint(order_routes.bp)    
-    app.register_blueprint(recipe_routes.bp)    
+    
     
     
     api.add_resource(ProductResource, '/shop', '/product_list', '/products/<int:product_id>', '/products/add', '/products/edit/<int:product_id>', '/products/delete/<int:product_id>')

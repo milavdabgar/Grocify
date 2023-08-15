@@ -70,7 +70,7 @@ form {
 
 button {
   padding: 10px 20px;
-  background-color: #f55536;
+  background-color: #383464;
   color: #fff;
   border: none;
   border-radius: 3px;
@@ -79,5 +79,5 @@ button {
 }
 
 button:hover {
-  background-color: #e03d1e;
+  background-color: #615bad;
 }
