@@ -25,7 +25,7 @@ class mySQLapp(Config):
     
     # MySQL connection for sqlAlchemy
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
-    f'mysql+mysqlconnector://root:{mysql_encoded_password}@localhost/fresh_basket_sample'
+    f'mysql+mysqlconnector://root:{mysql_encoded_password}@localhost/grocify_sample'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
      
     # MySQL connection for raw SQL
