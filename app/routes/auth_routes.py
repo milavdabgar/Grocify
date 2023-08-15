@@ -91,8 +91,11 @@ def profile():
                 
         # checks items on the cart
         cart_count = get_cart_count()
-
-        # Render the template and pass the user data to it
-        return render_template('auth_profile.html', user=user, shipping_info=shipping_info, cart_count=cart_count)
+        
+        if session['email'] == 'admin@grocify.com':
+            return render_template('auth_profile_admin.html', user=user, shipping_info=shipping_info, cart_count=cart_count)
+        else:
+            # Render the template and pass the user data to it
+            return render_template('auth_profile.html', user=user, shipping_info=shipping_info, cart_count=cart_count)
     else:
         return redirect(url_for('auth_routes.signin'))

@@ -13,7 +13,6 @@
         <a href="{{ url_for('home_routes.landing') }}" class="back-button">&larr; Back</a>
     </header>
     <div class="container">
-        <img src="{{ url_for('static', filename='images/signin.jpg') }}" alt="signin.jpg">
         <h1>Sign In to Grocify</h1>
         <form id="signin-form" method="POST" action="{{ url_for('auth_routes.signin') }}">
             <input type="text" id="email" name="email" placeholder="Email" required>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FloatField
 from wtforms.validators import InputRequired
@@ -64,30 +64,34 @@ def delete_product(product_id):
 
 @bp.route('/shop')
 def shop():
-    columns = [getattr(Product, column_name) for column_name in Product.__table__.columns.keys()]
-    products = db.session.query(*columns).all()
+    if 'email' in session:
+        columns = [getattr(Product, column_name) for column_name in Product.__table__.columns.keys()]
+        products = db.session.query(*columns).all()
 
-    cart_count = get_cart_count()
-    return render_template('product_shop.html', products=products, cart_count=cart_count)
+        cart_count = get_cart_count()
+        return render_template('product_shop.html', products=products, cart_count=cart_count)
+    else:
+        return redirect(url_for('auth_routes.signin'))
 
 @bp.route('/search')
 def search():
-    # Get the search query from the request's query parameters
-    query = request.args.get('query')
+    if 'email' in session:
+        # Get the search query from the request's query parameters
+        query = request.args.get('query')
+    
+        # Search for products matching the query and retrieve them as tuples
+        product_columns = [getattr(Product, column_name) for column_name in Product.__table__.columns.keys()]   
+        products = db.session.query(*product_columns).filter(
+            db.or_(Product.name.ilike(f'%{query}%'), Product.category.ilike(f'%{query}%'), Product.description.ilike(f'%{query}%'))
+        ).all()
 
-    # Check if the query is None or empty
-    if not query or query.strip() == '':
-        # Handle the case when no query is provided
-        return redirect(url_for('product_routes.shop'))
-   
-    # Search for products matching the query and retrieve them as tuples
-    product_columns = [getattr(Product, column_name) for column_name in Product.__table__.columns.keys()]   
-    products = db.session.query(*product_columns).filter(
-        db.or_(Product.name.ilike(f'%{query}%'), Product.category.ilike(f'%{query}%'), Product.description.ilike(f'%{query}%'))
-    ).all()
-
-    # checks items on the cart
-    cart_count = get_cart_count()
-
-    # Render the template and pass the product data to it
-    return render_template('product_search.html', products=products, query=query, cart_count=cart_count)
+        # checks items on the cart
+        cart_count = get_cart_count()
+        
+        if session['email'] == 'admin@grocify.com':
+            return render_template('product_search_admin.html', products=products, query=query, cart_count=cart_count)
+        else:
+            # Render the template and pass the product data to it
+            return render_template('product_search.html', products=products, query=query, cart_count=cart_count)
+    else:
+        return redirect(url_for('auth_routes.signin'))
