@@ -13,7 +13,7 @@
 
 <h1>Edit Product</h1>
 
-<form method="POST" action="{{ url_for('product_forms.edit_product', product_id=product.id) }}">
+<form method="POST" action="{{ url_for('product_routes.edit_product', product_id=product.id) }}">
     {{ form.csrf_token }}
     {{ form.name.label }} {{ form.name }}
     {{ form.description.label }} {{ form.description }}

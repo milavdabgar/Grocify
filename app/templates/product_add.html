@@ -12,7 +12,7 @@
 <div class="container2">
 <h1>Add Product</h1>
 
-<form method="POST" action="{{ url_for('product_forms.add_product') }}">
+<form method="POST" action="{{ url_for('product_routes.add_product') }}">
     {{ form.csrf_token }}
     {{ form.name.label }} {{ form.name }}
     {{ form.description.label }} {{ form.description }}

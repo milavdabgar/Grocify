@@ -13,7 +13,7 @@
 
 <p>Are you sure you want to delete the product "{{ product.name }}"?</p>
 
-<form method="POST" action="{{ url_for('product_forms.delete_product', product_id=product.id) }}">
+<form method="POST" action="{{ url_for('product_routes.delete_product', product_id=product.id) }}">
     <button type="submit">Delete</button>
 </form>
 

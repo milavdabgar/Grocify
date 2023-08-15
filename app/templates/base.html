@@ -30,10 +30,10 @@
           </div>
           <nav class="show-menu">
             <ul>
-              <li><a href="{{ url_for('home.home') }}">Home</a></li>
-              <li><a href="{{ url_for('product_forms.shop') }}">Shop</a></li>
-              <li><a href="{{ url_for('recipe.recipe') }}">Recipes</a></li>
-              <li><a href="{{ url_for('videos.videos') }}">Videos</a></li>
+              <li><a href="{{ url_for('home_routes.dashboard') }}">Home</a></li>
+              <li><a href="{{ url_for('product_routes.shop') }}">Shop</a></li>
+              <li><a href="{{ url_for('recipe_routes.recipe') }}">Recipes</a></li>
+              <li><a href="{{ url_for('recipe_routes.videos') }}">Videos</a></li>
               <li>
                 <form action="/search" method="GET">
                   <input type="search" name="query" placeholder="Search the grocery shop...">
@@ -44,10 +44,10 @@
           </nav>
           <div class="user">
             <div class="profile">
-              <a href="{{ url_for('profile.profile') }}"><i class="material-icons icon-large">account_circle</i>Account</a>
+              <a href="{{ url_for('auth_routes.profile') }}"><i class="material-icons icon-large">account_circle</i>Account</a>
             </div>
             <div class="cart">
-              <a href="{{ url_for('cart.cart') }}">
+              <a href="{{ url_for('cart_routes.cart') }}">
                 <i class="material-icons">shopping_cart</i>
                     {% if cart_count is defined %}
                         {% if cart_count > 0 %}

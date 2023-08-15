@@ -2,7 +2,13 @@
 
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/results.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
 {% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>
+{% endblock %}
+
 
 {% block title %}
     Grocify: Search Results
@@ -24,6 +30,7 @@
                         <h3>{{ product.name }}</h3>
                         <p class="description">{{ product.description }}</p>
                         <p class="price">Price: {{ product.price }}</p>
+                        <button onclick="addToCart('{{ product.id }}')">Add to Cart</button>
                     </div>
                 </li>
             {% endfor %}
@@ -32,7 +39,7 @@
         <p>No products found.</p>
     {% endif %}
     <hr>
-    <a href="{{ url_for('products.products') }}">Back to Products</a>
+    <a href="{{ url_for('product_routes.shop') }}">Back to Products</a>
 </section>
 
 {% endblock %}

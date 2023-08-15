@@ -1,9 +1,16 @@
 from flask import Blueprint, render_template
-import requests
+from app.routes.cart_routes import get_cart_count
 import os
-from app.controllers import get_cart_count
+import requests
 
-bp = Blueprint('videos', __name__)
+bp = Blueprint('recipe_routes', __name__)
+
+@bp.route('/recipe')
+def recipe():
+    # checks items on the cart
+    cart_count = get_cart_count()
+    return render_template('recipes_dbmeal.html', cart_count=cart_count)
+
 
 @bp.route('/videos')
 def videos():
@@ -32,4 +39,4 @@ def videos():
     cart_count = get_cart_count()
     
     # Render the template and pass the videos to it
-    return render_template('videos.html', videos=videos, cart_count=cart_count)
+    return render_template('recipes_youtube.html', videos=videos, cart_count=cart_count)

@@ -13,7 +13,7 @@
     <h1>Payment Checkout</h1>
     <div class="payment-container">
       <h2>Payment</h2>
-      <div class="payment-img"></div>
+      <p><b>Payment Method: Cash on Delivery</b></p>
       <p><b>Total Price: INR {{ total_price }}</b></p>
     </div>
     <div class="ship-container">
@@ -53,13 +53,12 @@
           {% endfor %}
         </tbody>
       </table>
-      <p>Total Price: INR {{ total_price }}</p>
     </div>
     <div class="buttons-container">
-      <form class="total-price" action="{{ url_for('place_order.place_order') }}" method="POST">
+      <form class="total-price" action="{{ url_for('order_routes.place_order') }}" method="POST">
         <button type="submit">Place Order</button>
       </form>
-      <form action="{{ url_for('products.products') }}">
+      <form action="{{ url_for('product_routes.shop') }}">
         <button type="submit">Continue Shopping</button>
       </form>
     </div>

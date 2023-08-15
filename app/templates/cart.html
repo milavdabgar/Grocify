@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-    Fresh Basket: Cart
+    Grocify: Cart
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
                 <td><img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.image }}"></td>
                 <td>{{ product.category }}</td>
                 <td>
-                    <form action="{{ url_for('remove_from_cart.remove_from_cart') }}" method="POST">
+                    <form action="{{ url_for('cart_routes.remove_from_cart') }}" method="POST">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
                         <button type="submit">Remove</button>
                     </form>
@@ -47,10 +47,10 @@
     <p class="total-price">Total Price: INR {{ total_price }}</p>
 
     <div class="buttons">
-        <form action="{{ url_for('shipping.shipping') }}" method="GET">
+        <form action="{{ url_for('order_routes.shipping') }}" method="GET">
             <button type="submit">Proceed to Checkout</button>
         </form>
-        <form action="{{ url_for('products.products') }}">
+        <form action="{{ url_for('product_routes.shop') }}">
             <button type="submit">Continue Shopping</button>
         </form>
     </div>

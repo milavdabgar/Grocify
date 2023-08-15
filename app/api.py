@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource, reqparse
 from app.models import Product
-from app.views.product_forms import ProductForm
+from app.routes.product_routes import ProductForm
 
 class ProductResource(Resource):
     parser = reqparse.RequestParser()
