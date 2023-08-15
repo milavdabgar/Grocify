@@ -31,13 +31,14 @@ def show_product(product_id):
 
 @bp.route('/products/add', methods=['GET', 'POST'])
 def add_product():
-    form = ProductForm(request.form)
-    if request.method == 'POST' and form.validate():
+    form = ProductForm()
+    if request.method == 'POST' and form.validate_on_submit():
         data = form.data
-        product = Product(**data)
+        product = Product(name=data['name'], description=data['description'], price=data['price'], image=data['image'], category=data['category'])  # adjust the fields according to your Product class
         product.save_to_db()
         return redirect(url_for('product_routes.product_list'))
     return render_template('product_add.html', form=form)
+
 
 @bp.route('/products/edit/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
