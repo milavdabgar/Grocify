@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+{% endblock %}
+
+{% block title %}
+    Grocify: Delete Product
+{% endblock %}
+
+{% block content %}
+<h1>Delete Product</h1>
+
+<p>Are you sure you want to delete the product "{{ product.name }}"?</p>
+
+<form method="POST" action="{{ url_for('product_forms.delete_product', product_id=product.id) }}">
+    <button type="submit">Delete</button>
+</form>
+
+
+{% endblock %}

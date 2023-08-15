@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+{% endblock %}
+
+{% block title %}
+    Grocify: Product {{ product.name }}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ product.name }}</h1>
+
+<p>Description: {{ product.description }}</p>
+<p>Price: {{ product.price }}</p>
+<p>Image: <img src="{{ product.image }}" alt="{{ product.name }}"></p>
+<p>Category: {{ product.category }}</p>
+
+
+{% endblock %}

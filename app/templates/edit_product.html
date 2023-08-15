@@ -5,21 +5,22 @@
 {% endblock %}
 
 {% block title %}
-    Grocify: Add Product
+    Grocify: Edit Product
 {% endblock %}
 
 {% block content %}
 <div class="container2">
-<h1>Add Product</h1>
 
-<form method="POST" action="{{ url_for('product_forms.add_product') }}">
+<h1>Edit Product</h1>
+
+<form method="POST" action="{{ url_for('product_forms.edit_product', product_id=product.id) }}">
     {{ form.csrf_token }}
     {{ form.name.label }} {{ form.name }}
     {{ form.description.label }} {{ form.description }}
     {{ form.price.label }} {{ form.price }}
     {{ form.image.label }} {{ form.image }}
     {{ form.category.label }} {{ form.category }}
-    <input type="submit" value="Add Product">
+    <input type="submit" value="Edit Product">
 </form>
 
 </div>

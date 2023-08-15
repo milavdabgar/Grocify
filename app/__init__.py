@@ -5,7 +5,7 @@ from flask import Flask
 
 from config import *
 from app.extensions import *
-from app.views import add_product, landing, home, recipe, products, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
+from app.views import landing, home, product_forms, recipe, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
 from app.api.products import ProductResource
 
 def create_app():
@@ -21,7 +21,6 @@ def create_app():
     app.register_blueprint(landing.bp)
     app.register_blueprint(home.bp)
     app.register_blueprint(recipe.bp)
-    app.register_blueprint(products.bp)
     app.register_blueprint(signup.bp)
     app.register_blueprint(signin.bp)
     app.register_blueprint(profile.bp)
@@ -37,9 +36,9 @@ def create_app():
     app.register_blueprint(videos.bp)
     app.register_blueprint(admin_panel.bp)
     
-    app.register_blueprint(add_product.add_product_bp)
+    app.register_blueprint(product_forms.bp)
     
-    api.add_resource(ProductResource, '/product/<int:product_id>')
+    api.add_resource(ProductResource, '/shop', '/product_list', '/products/<int:product_id>', '/products/add', '/products/edit/<int:product_id>', '/products/delete/<int:product_id>')
     
     if not app.debug and not app.testing:
         if app.config['LOG_TO_STDOUT']:

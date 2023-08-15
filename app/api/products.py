@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request
+from flask import request
 from flask_restful import Resource, reqparse
 from app.models import Product
+from app.views.product_forms import ProductForm
 
 class ProductResource(Resource):
     parser = reqparse.RequestParser()
@@ -16,24 +17,32 @@ class ProductResource(Resource):
             return product.json()
         return {'message': 'Product not found'}, 404
 
+
     def post(self):
-        data = ProductResource.parser.parse_args()
-        product = Product(**data)
-        product.save_to_db()
-        return product.json(), 201
+        form = ProductForm(request.form)
+        if form.validate():
+            data = form.data
+            product = Product(**data)
+            product.save_to_db()
+            return product.json(), 201
+        return {'message': 'Invalid input'}, 400
 
     def put(self, product_id):
-        data = ProductResource.parser.parse_args()
-        product = Product.query.get(product_id)
-        if product:
-            product.name = data['name']
-            product.description = data['description']
-            product.price = data['price']
-            product.image = data['image']
-            product.category = data['category']
-            product.save_to_db()
-            return product.json()
-        return {'message': 'Product not found'}, 404
+        form = ProductForm(request.form)
+        if form.validate():
+            data = form.data
+            product = Product.query.get(product_id)
+            if product:
+                product.name = data['name']
+                product.description = data['description']
+                product.price = data['price']
+                product.image = data['image']
+                product.category = data['category']
+                product.save_to_db()
+                return product.json()
+            return {'message': 'Product not found'}, 404
+        return {'message': 'Invalid input'}, 400
+
 
     def delete(self, product_id):
         product = Product.query.get(product_id)
