@@ -5,8 +5,8 @@ from flask import Flask
 
 from config import *
 from app.extensions import *
-from app.views import landing, home, product_forms, recipe, signup, signin, profile, signout, search, cart, add_to_cart, remove_from_cart, checkout, place_order, order_confirmation, shipping, videos, admin_panel
-from app.api.products import ProductResource
+from app.routes import auth_routes, home_routes, product_routes, cart_routes, order_routes, recipe_routes
+from app.api import ProductResource
 
 def create_app():
     app = Flask(__name__)
@@ -18,25 +18,13 @@ def create_app():
     migrate.init_app(app, db, render_as_batch=True)
     
     # Blueprint registrations
-    app.register_blueprint(landing.bp)
-    app.register_blueprint(home.bp)
-    app.register_blueprint(recipe.bp)
-    app.register_blueprint(signup.bp)
-    app.register_blueprint(signin.bp)
-    app.register_blueprint(profile.bp)
-    app.register_blueprint(signout.bp)
-    app.register_blueprint(search.bp)
-    app.register_blueprint(cart.bp)
-    app.register_blueprint(add_to_cart.add_to_cart_bp)
-    app.register_blueprint(remove_from_cart.bp)
-    app.register_blueprint(checkout.bp)
-    app.register_blueprint(place_order.bp)
-    app.register_blueprint(order_confirmation.bp)
-    app.register_blueprint(shipping.bp)
-    app.register_blueprint(videos.bp)
-    app.register_blueprint(admin_panel.bp)
+    app.register_blueprint(auth_routes.bp)
+    app.register_blueprint(home_routes.bp)
+    app.register_blueprint(product_routes.bp)
+    app.register_blueprint(cart_routes.bp)
+    app.register_blueprint(order_routes.bp)    
+    app.register_blueprint(recipe_routes.bp)    
     
-    app.register_blueprint(product_forms.bp)
     
     api.add_resource(ProductResource, '/shop', '/product_list', '/products/<int:product_id>', '/products/add', '/products/edit/<int:product_id>', '/products/delete/<int:product_id>')
     
