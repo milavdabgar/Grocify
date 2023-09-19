@@ -30,6 +30,8 @@ def show_product(product_id):
 
 
 @bp.route('/products/add', methods=['GET', 'POST'])
+# @login_required
+# @roles_required('admin')
 def add_product():
     form = ProductForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -41,6 +43,8 @@ def add_product():
 
 
 @bp.route('/products/edit/<int:product_id>', methods=['GET', 'POST'])
+# @login_required
+# @roles_required('admin')
 def edit_product(product_id):
     product = Product.query.get(product_id)
     if not product:
@@ -53,6 +57,8 @@ def edit_product(product_id):
     return render_template('product_edit.html', form=form, product=product)
 
 @bp.route('/products/delete/<int:product_id>', methods=['GET', 'POST'])
+# @login_required
+# @roles_required('admin')
 def delete_product(product_id):
     product = Product.query.get(product_id)
     if not product:

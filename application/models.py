@@ -1,11 +1,25 @@
 from application.extensions import db
-class User(db.Model):
+from flask_security import UserMixin, RoleMixin
+from flask_login import login_manager
+
+roles_users = db.Table('roles_users',
+        db.Column('user_id', db.Integer(), db.ForeignKey('User.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('Role.id')))  
+
+class User(db.Model, UserMixin):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
+    roles = db.relationship('Role', secondary=roles_users,backref=db.backref('users', lazy='dynamic'))
+    
+class Role(db.Model, RoleMixin):
+    __tablename__ = 'Role'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
     
 class Product(db.Model):
     __tablename__ = 'Product'
