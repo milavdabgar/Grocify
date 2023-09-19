@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 import bcrypt
-from app.extensions import db
-from app.models import User, Shipping
-from app.routes.cart_routes import get_cart_count
+from application.extensions import db
+from application.models import User, Shipping
+from application.routes.cart_routes import get_cart_count
 
 bp = Blueprint('auth_routes', __name__)
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-from app.extensions import db
-from app.models import User, Order, OrderProduct, Product, Shipping, Cart, CartProduct
-from app.routes.cart_routes import get_cart_count
+from application.extensions import db
+from application.models import User, Order, OrderProduct, Product, Shipping, Cart, CartProduct
+from application.routes.cart_routes import get_cart_count
 
 bp = Blueprint('order_routes', __name__)
 

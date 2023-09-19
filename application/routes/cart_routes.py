@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, jsonify
-from app.extensions import db
-from app.models import User, Cart, CartProduct, Product, Shipping
+from application.extensions import db
+from application.models import User, Cart, CartProduct, Product, Shipping
 
 bp = Blueprint('cart_routes', __name__)
 

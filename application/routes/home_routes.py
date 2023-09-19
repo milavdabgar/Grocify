@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-from app.routes.cart_routes import get_cart_count
+from application.routes.cart_routes import get_cart_count
 
 bp = Blueprint('home_routes', __name__)
 

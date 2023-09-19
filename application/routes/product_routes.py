@@ -3,9 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FloatField
 from wtforms.validators import InputRequired
 
-from app.models import Product
-from app.routes.cart_routes import get_cart_count
-from app.extensions import db
+from application.models import Product
+from application.routes.cart_routes import get_cart_count
+from application.extensions import db
 
 class ProductForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])

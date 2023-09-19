@@ -4,9 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 from config import Config
-from app.extensions import db
-from app.routes import auth_routes, home_routes, product_routes, cart_routes, order_routes
-from app.api import ProductResource
+from application.extensions import db
+from application.routes import auth_routes, home_routes, product_routes, cart_routes, order_routes
+from application.api import ProductResource
 
 def create_app():
     app = Flask(__name__)
