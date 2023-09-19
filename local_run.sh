@@ -15,5 +15,10 @@ fi
 # Activate virtual env
 . .venv/bin/activate
 export ENV=development
+export FLASK_APP=main.py
+# Run migrations
+flask db migrate -m "Database migration"
+flask db upgrade
+
 python main.py
 deactivate
