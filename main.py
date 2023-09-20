@@ -100,7 +100,7 @@ api.add_resource(
 
 app.logger.info("App setup complete")
 
-# return app
+# # return app
 
 # Import all the controllers so they are loaded
 print("importing the stuff")

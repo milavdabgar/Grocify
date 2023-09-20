@@ -29,13 +29,6 @@ class CRUDMixin(Model):
         db.session.commit()
 
 
-roles_users = db.Table(
-    "roles_users",
-    db.Column("user_id", db.Integer(), db.ForeignKey("User.id")),
-    db.Column("role_id", db.Integer(), db.ForeignKey("Role.id")),
-)
-
-
 class User(db.Model, UserMixin, CRUDMixin):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -44,9 +37,10 @@ class User(db.Model, UserMixin, CRUDMixin):
     password = db.Column(db.String(255), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     fs_uniquifier = db.Column(db.String(64), unique=True)
-    roles = db.relationship(
-        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
-    )
+    role_id = db.Column(db.Integer, db.ForeignKey("Role.id"), nullable=False)
+    # roles = db.relationship(
+    #     "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    # )
 
 
 class Role(db.Model, RoleMixin, CRUDMixin):
@@ -64,6 +58,8 @@ class Product(db.Model, CRUDMixin):
     price = db.Column(db.Numeric(10, 2), nullable=False)
     image = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
+    section_id = db.Column(db.Integer, db.ForeignKey("Section.id"), nullable=False)
+    quantity = db.Column(db.Numeric(10, 2), nullable=True)
 
     def json(self):
         return {
@@ -82,6 +78,12 @@ class Product(db.Model, CRUDMixin):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+
+class Section(db.Model):
+    __tablename__ = "Section"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
 
 
 class Shipping(db.Model, CRUDMixin):
@@ -107,12 +109,6 @@ class Cart(db.Model, CRUDMixin):
     )
 
 
-class CartProduct(db.Model, CRUDMixin):
-    __tablename__ = "CartProduct"
-    cart_id = db.Column(db.Integer, db.ForeignKey("Cart.id"), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
-
-
 class Order(db.Model, CRUDMixin):
     __tablename__ = "Order"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -121,7 +117,20 @@ class Order(db.Model, CRUDMixin):
     total = db.Column(db.Numeric(10, 2), nullable=False)
 
 
+class CartProduct(db.Model, CRUDMixin):
+    __tablename__ = "CartProduct"
+    cart_id = db.Column(db.Integer, db.ForeignKey("Cart.id"), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
+
+
 class OrderProduct(db.Model, CRUDMixin):
     __tablename__ = "OrderProduct"
     order_id = db.Column(db.Integer, db.ForeignKey("Order.id"), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
+
+
+roles_users = db.Table(
+    "roles_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("User.id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("Role.id")),
+)
