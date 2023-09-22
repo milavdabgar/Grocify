@@ -15,12 +15,12 @@ fi
 # Activate virtual env
 . .venv/bin/activate
 export ENV=testing
-# export FLASK_APP=main.py
+export FLASK_APP=main.py
 # Run migrations
-# flask db init
-# flask db stamp head
-# flask db migrate -m "Temporary migration message"
-# flask db upgrade
+flask db init
+flask db stamp head
+flask db migrate -m "Temporary migration message"
+flask db upgrade
 
 # pytest --verbose --disable-warnings -s
 deactivate
