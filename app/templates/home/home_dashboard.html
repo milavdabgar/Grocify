@@ -1,27 +1,24 @@
 {% extends 'base.html' %}
-
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/common.css') }}">
+     <link rel="stylesheet"
+           type="text/css"
+           href="{{ url_for('static', filename='styles/common.css') }}">
 {% endblock %}
-
-{% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>
-{% endblock %}
-
-{% block title %}
-    Grocify Home
-{% endblock %}
-
-{% block content %}
-
-<section>
-    <div class="slideshow-container">
-        <img class="slides" src="{{ url_for('static', filename='images/banner1.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner2.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner3.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner4.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner5.jpg') }}">
-    </div>
-</section>
-
+{% block scripts %}<script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>{% endblock %}
+{% block title %}Grocify Home{% endblock %}
+{% block app_content %}
+     <section>
+          <div class="slideshow-container">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner1.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner2.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner3.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner4.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner5.jpg') }}">
+          </div>
+     </section>
 {% endblock %}

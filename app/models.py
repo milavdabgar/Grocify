@@ -83,12 +83,11 @@ class PaginatedAPIMixin(object):
 
 
 class User(UserMixin, PaginatedAPIMixin, db.Model):
-    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255))
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    phone = db.Column(db.String(20), nullable=False, unique=True)
+    phone = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
@@ -159,14 +158,13 @@ def load_user(id):
 
 
 class Product(db.Model, SearchableMixin):
-    __tablename__ = "Product"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
     image = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
-    section_id = db.Column(db.Integer, db.ForeignKey("Section.id"), nullable=False)
+    section_id = db.Column(db.Integer, db.ForeignKey("section.id"), nullable=False)
     quantity = db.Column(db.Numeric(10, 2), nullable=True)
 
     # def json(self):
@@ -189,16 +187,14 @@ class Product(db.Model, SearchableMixin):
 
 
 class Section(db.Model):
-    __tablename__ = "Section"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
 
 
 class Shipping(db.Model):
-    __tablename__ = "Shipping"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(
-        db.Integer, db.ForeignKey("User.id"), nullable=True, default=None
+        db.Integer, db.ForeignKey("user.id"), nullable=True, default=None
     )
     full_name = db.Column(db.String(255), nullable=True, default=None)
     street_address = db.Column(db.String(255), nullable=True, default=None)
@@ -209,32 +205,39 @@ class Shipping(db.Model):
 
 
 class Cart(db.Model):
-    __tablename__ = "Cart"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     shipping_id = db.Column(
-        db.Integer, db.ForeignKey("Shipping.id"), nullable=True, default=None
+        db.Integer, db.ForeignKey("shipping.id"), nullable=True, default=None
     )
 
 
 class Order(db.Model):
-    __tablename__ = "Order"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     status = db.Column(db.String(255), nullable=False, default="processing")
     total = db.Column(db.Numeric(10, 2), nullable=False)
 
 
 class CartProduct(db.Model):
-    __tablename__ = "CartProduct"
-    cart_id = db.Column(db.Integer, db.ForeignKey("Cart.id"), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey("cart.id"), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), primary_key=True)
 
 
 class OrderProduct(db.Model):
-    __tablename__ = "OrderProduct"
-    order_id = db.Column(db.Integer, db.ForeignKey("Order.id"), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("order.id"), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), primary_key=True)
+    
+class Post(SearchableMixin, db.Model):
+    __searchable__ = ['body']
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    language = db.Column(db.String(5))
+
+    def __repr__(self):
+        return '<Post {}>'.format(self.body)
 
 
 # from flask_security import UserMixin, RoleMixin

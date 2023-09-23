@@ -1,54 +1,46 @@
 <!-- cart.html -->
 {% extends 'base_admin.html' %}
-
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='styles/shop.css') }}">
 {% endblock %}
-
-{% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>
-{% endblock %}
-
-{% block title %}
-    Grocify: Product List
-{% endblock %}
-
-{% block content %}
-
-<div class="shop-container">
+{% block scripts %}<script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>{% endblock %}
+{% block title %}Grocify: Product List{% endblock %}
+{% block app_content %}
+  <div class="shop-container">
     <div class="category-container">
-        <h3>Categories</h3>
-        <ul id="category-list">
-            <li data-category="all" class="active">All</li>
-            <li data-category="Fruit">Fruits</li>
-            <li data-category="Dairy">Dairy</li>
-            <li data-category="Bread">Breads</li>
-            <li data-category="Meat">Meat</li>
-            <li data-category="Fish">Fish</li>
-            <li data-category="Vegetable">Vegetables</li>
-          </ul>     
+      <h3>Categories</h3>
+      <ul id="category-list">
+        <li data-category="all" class="active">All</li>
+        <li data-category="Fruit">Fruits</li>
+        <li data-category="Dairy">Dairy</li>
+        <li data-category="Bread">Breads</li>
+        <li data-category="Meat">Meat</li>
+        <li data-category="Fish">Fish</li>
+        <li data-category="Vegetable">Vegetables</li>
+      </ul>
     </div>
     <div id="message"></div>
     <div id="cart-items"></div>
     <ul id="product-list">
-        {% for product in products %}
+      {% for product in products %}
         <li data-category="{{ product.category }}">
-            <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <p class="price">Price: INR {{ product.price }}</p>
-            <p>
-              <a href="{{ url_for('product_routes.edit_product', product_id=product.id) }}">
-                <button>Edit</button>
-              </a>
-              <a href="{{ url_for('product_routes.delete_product', product_id=product.id) }}">
-                <button>Delete</button>
-              </a>
-            </p>
+          <img src="{{ url_for('static', filename=product.image) }}"
+               alt="{{ product.name }}">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <p class="price">Price: INR {{ product.price }}</p>
+          <p>
+            <a href="{{ url_for('product_routes.edit_product', product_id=product.id) }}">
+              <button>Edit</button>
+            </a>
+            <a href="{{ url_for('product_routes.delete_product', product_id=product.id) }}">
+              <button>Delete</button>
+            </a>
+          </p>
         </li>
-        {% endfor %}
+      {% endfor %}
     </ul>
-    
-</div>
-
+  </div>
 {% endblock %}

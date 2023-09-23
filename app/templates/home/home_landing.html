@@ -1,27 +1,53 @@
 {% extends 'base.html' %}
-
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/common.css') }}">
+     <link rel="stylesheet"
+           type="text/css"
+           href="{{ url_for('static', filename='styles/common.css') }}">
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>{% endblock %}
+{% block title %}Grocify Home{% endblock %}
+{% block app_content %}
+     <section>
+          <div class="slideshow-container">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner1.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner2.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner3.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner4.jpg') }}">
+               <img class="slides"
+                    src="{{ url_for('static', filename='images/banner5.jpg') }}">
+          </div>
+     </section>
 {% endblock %}
 
-{% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>
-{% endblock %}
 
-{% block title %}
-    Grocify Home
-{% endblock %}
+{# 
+{% extends 'base-mb.html' %}
 
-{% block content %}
-
-<section>
-    <div class="slideshow-container">
-        <img class="slides" src="{{ url_for('static', filename='images/banner1.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner2.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner3.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner4.jpg') }}">
-        <img class="slides" src="{{ url_for('static', filename='images/banner5.jpg') }}">
-    </div>
-</section>
-
-{% endblock %}
+{% block app_content %}
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    {% for i in range(images|length) %}
+      <li data-target="#myCarousel" data-slide-to="{{ i }}" {% if loop.first %}class="active"{% endif %}></li>
+    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+    {% for image in images %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <img class="d-block w-100" src="{{ url_for('static', filename=image) }}" alt="{{ image }}">
+      </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+{% endblock %} #}

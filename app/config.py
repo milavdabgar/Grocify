@@ -20,6 +20,8 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['milav.dabgar@gmail.com']
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+    PRODUCTS_PER_PAGE = 25
 
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
     SECURITY_PASSWORD_HASH = os.environ.get("SECURITY_PASSWORD_HASH") or "bcrypt"

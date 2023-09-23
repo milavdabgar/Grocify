@@ -1,52 +1,46 @@
 {% extends 'base_admin.html' %}
-
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/results.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+    <link rel="stylesheet"
+          type="text/css"
+          href="{{ url_for('static', filename='styles/results.css') }}">
+    <link rel="stylesheet"
+          type="text/css"
+          href="{{ url_for('static', filename='styles/shop.css') }}">
 {% endblock %}
-
-{% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>
-{% endblock %}
-
-
-{% block title %}
-    Grocify: Search Results
-{% endblock %}
-
-{% block content %}
-
-<section class="search-results">
-    <h1>Search Results</h1>
-    <p>Search for: {{ query }}</p>
-    <hr>
-    {% if products %}
-        <h2>Products Found</h2>
-        <ul class="product-list">
-            {% for product in products %}
-                <li class="product-item">
-                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
-                    <div class="product-info">
-                        <h3>{{ product.name }}</h3>
-                        <p class="description">{{ product.description }}</p>
-                        <p class="price">Price: {{ product.price }}</p>
-                        <p>
-                            <a href="{{ url_for('product_routes.edit_product', product_id=product.id) }}">
-                              <button>Edit</button>
-                            </a>
-                            <a href="{{ url_for('product_routes.delete_product', product_id=product.id) }}">
-                              <button>Delete</button>
-                            </a>
-                          </p>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No products found.</p>
-    {% endif %}
-    <hr>
-    <a href="{{ url_for('product_routes.product_list') }}">Back to Products</a>
-</section>
-
+{% block scripts %}<script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>{% endblock %}
+{% block title %}Grocify: Search Results{% endblock %}
+{% block app_content %}
+    <section class="search-results">
+        <h1>Search Results</h1>
+        <p>Search for: {{ query }}</p>
+        <hr>
+        {% if products %}
+            <h2>Products Found</h2>
+            <ul class="product-list">
+                {% for product in products %}
+                    <li class="product-item">
+                        <img src="{{ url_for('static', filename=product.image) }}"
+                             alt="{{ product.name }}">
+                        <div class="product-info">
+                            <h3>{{ product.name }}</h3>
+                            <p class="description">{{ product.description }}</p>
+                            <p class="price">Price: {{ product.price }}</p>
+                            <p>
+                                <a href="{{ url_for('product_routes.edit_product', product_id=product.id) }}">
+                                    <button>Edit</button>
+                                </a>
+                                <a href="{{ url_for('product_routes.delete_product', product_id=product.id) }}">
+                                    <button>Delete</button>
+                                </a>
+                            </p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No products found.</p>
+        {% endif %}
+        <hr>
+        <a href="{{ url_for("product_routes.product_list") }}">Back to Products</a>
+    </section>
 {% endblock %}

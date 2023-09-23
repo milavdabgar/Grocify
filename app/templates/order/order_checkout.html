@@ -1,30 +1,31 @@
 {% extends 'base.html' %}
-
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/checkout.css') }}">
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='styles/checkout.css') }}">
 {% endblock %}
-
-{% block title %}
-    Grocify: Checkout
-{% endblock %}
-
-{% block content %}
-<div class="body-container">
+{% block title %}Grocify: Checkout{% endblock %}
+{% block app_content %}
+  <div class="body-container">
     <h1>Payment Checkout</h1>
     <div class="payment-container">
       <h2>Payment</h2>
-      <p><b>Payment Method: Cash on Delivery</b></p>
-      <p><b>Total Price: INR {{ total_price }}</b></p>
+      <p>
+        <b>Payment Method: Cash on Delivery</b>
+      </p>
+      <p>
+        <b>Total Price: INR {{ total_price }}</b>
+      </p>
     </div>
     <div class="ship-container">
       {% for ship in shipping_info %}
-      <h2>Shipping Information</h2>
-      <p>Full Name: {{ ship.full_name }}</p>
-      <p>Street Address: {{ ship.street_address }}</p>
-      <p>City: {{ ship.city }}</p>
-      <p>State/Province: {{ ship.state_province }}</p>
-      <p>Postal Code: {{ ship.postal_code }}</p>
-      <p>Country: {{ ship.country }}</p>
+        <h2>Shipping Information</h2>
+        <p>Full Name: {{ ship.full_name }}</p>
+        <p>Street Address: {{ ship.street_address }}</p>
+        <p>City: {{ ship.city }}</p>
+        <p>State/Province: {{ ship.state_province }}</p>
+        <p>Postal Code: {{ ship.postal_code }}</p>
+        <p>Country: {{ ship.country }}</p>
       {% endfor %}
     </div>
     <div class="content-container">
@@ -42,23 +43,30 @@
         </thead>
         <tbody>
           {% for product in cart_products %}
-          <tr>
-            <td>{{ product.id }}</td>
-            <td><b>{{ product.name }}</b></td>
-            <td>{{ product.description }}</td>
-            <td>INR {{ product.price }}</td>
-            <td><img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.image }}"></td>
-            <td>{{ product.category }}</td>
-          </tr>
+            <tr>
+              <td>{{ product.id }}</td>
+              <td>
+                <b>{{ product.name }}</b>
+              </td>
+              <td>{{ product.description }}</td>
+              <td>INR {{ product.price }}</td>
+              <td>
+                <img src="{{ url_for('static', filename=product.image) }}"
+                     alt="{{ product.image }}">
+              </td>
+              <td>{{ product.category }}</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
     <div class="buttons-container">
-      <form class="total-price" action="{{ url_for('order_routes.place_order') }}" method="POST">
+      <form class="total-price"
+            action="{{ url_for("order_routes.place_order") }}"
+            method="POST">
         <button type="submit">Place Order</button>
       </form>
-      <form action="{{ url_for('product_routes.shop') }}">
+      <form action="{{ url_for("product_routes.shop") }}">
         <button type="submit">Continue Shopping</button>
       </form>
     </div>

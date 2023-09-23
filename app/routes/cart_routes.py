@@ -29,7 +29,7 @@ def get_cart_count():
 def cart():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Retrieve cart data for the user from the database 
     cart_products = db.session.query(Product.id, Product.name, Product.description, Product.price, Product.image, Product.category) \
@@ -60,7 +60,7 @@ def cart():
 @bp.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Retrieve the product ID from the request form
     product_id = request.form.get('product_id')
@@ -93,7 +93,7 @@ def add_to_cart():
 def remove_from_cart():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Get the product ID from the request form
     product_id = request.form.get('product_id')

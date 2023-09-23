@@ -9,7 +9,7 @@ bp = Blueprint('order_routes', __name__)
 def shipping():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     if request.method == 'POST':
         if 'delete_shipping' in request.form:
@@ -61,7 +61,7 @@ def shipping():
 def checkout():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Retrieve cart data for the user from the database
     # Retrieve cart data for the user from the database 
@@ -97,7 +97,7 @@ def checkout():
 def place_order():
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Retrieve the user's ID
     user_id = db.session.query(User.id).filter(User.email == session['email']).scalar()
@@ -135,7 +135,7 @@ def place_order():
 def order_confirmation(order_id):
     # Check if the user is authenticated
     if 'email' not in session:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
     # Retrieve the order details using Flask SQLAlchemy
     order_products = db.session.query(

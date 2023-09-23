@@ -7,14 +7,12 @@ from app.routes.product_routes import ProductForm
 class ProductResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument("name", type=str, required=True, help="Name is required.")
-    parser.add_argument(
-        "description", type=str, required=True, help="Description is required."
-    )
+    parser.add_argument("description", type=str, required=True, help="Description is required.")
     parser.add_argument("price", type=float, required=True, help="Price is required.")
     parser.add_argument("image", type=str, required=True, help="Image is required.")
-    parser.add_argument(
-        "category", type=str, required=True, help="Category is required."
-    )
+    parser.add_argument("category", type=str, required=True, help="Category is required.")
+    parser.add_argument("quantity", type=int, required=True, help="Quantity is required.")
+    parser.add_argument("section_id", type=int, required=True, help="Section ID is required.")
 
     def get(self, product_id):
         product = Product.query.get(product_id)
@@ -42,6 +40,8 @@ class ProductResource(Resource):
                 product.price = data["price"]
                 product.image = data["image"]
                 product.category = data["category"]
+                product.quantity = data["quantity"]
+                product.section_id = data["section_id"]
                 product.save_to_db()
                 return product.json()
             return {"message": "Product not found"}, 404

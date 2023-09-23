@@ -1,27 +1,9 @@
-{% extends 'base_admin.html' %}
-
-{% block styles %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/add_product.css') }}">
-{% endblock %}
-
-{% block title %}
-    Grocify: Add Product
-{% endblock %}
-
-{% block content %}
-<div class="container2">
-<h1>Add Product</h1>
-
-<form method="POST" action="{{ url_for('product_routes.add_product') }}">
-    {{ form.csrf_token }}
-    {{ form.name.label }} {{ form.name }}
-    {{ form.description.label }} {{ form.description }}
-    {{ form.price.label }} {{ form.price }}
-    {{ form.image.label }} {{ form.image }}
-    {{ form.category.label }} {{ form.category }}
-    <input type="submit" value="Add Product">
-</form>
-
-</div>
-
+{% extends 'base-mb.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+    <h1>{{ 'Add Product' }}</h1>
+    <div class="row">
+        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+    </div>
+    {# fdsf #}
 {% endblock %}

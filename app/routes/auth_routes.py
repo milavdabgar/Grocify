@@ -72,7 +72,7 @@ def signout():
     session.clear()
 
     # Redirect to the sign-in page
-    return redirect(url_for('auth_routes.signin'))
+    return redirect(url_for('auth.login'))
 
 @bp.route('/profile')
 def profile():
@@ -98,4 +98,4 @@ def profile():
             # Render the template and pass the user data to it
             return render_template('auth2/auth_profile.html', user=user, shipping_info=shipping_info, cart_count=cart_count)
     else:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))

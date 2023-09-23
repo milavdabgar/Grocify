@@ -5,8 +5,8 @@ bp = Blueprint('home_routes', __name__)
 
 @bp.route('/')
 def landing():
-    # return  render_template('home/home_landing.html')
-    return  render_template('home/home_landing.html')
+    images = ["images/banner1.jpg", "images/banner2.jpg", "images/banner3.jpg", "images/banner4.jpg", "images/banner5.jpg"]
+    return  render_template('home/home_landing.html', images=images)
 
 @bp.route('/dashboard')
 def dashboard():
@@ -19,7 +19,7 @@ def dashboard():
             cart_count = get_cart_count()
             return render_template('home/home_dashboard.html', cart_count=cart_count)
     else:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
 @bp.route('/admin', methods=['GET'])
 def admin_panel():
@@ -27,7 +27,7 @@ def admin_panel():
     if 'email' in session and session['email'] == 'admin@grocify.com':
         return render_template('home/home_admin.html')
     else:
-        return redirect(url_for('auth_routes.signin'))
+        return redirect(url_for('auth.login'))
 
 @bp.errorhandler(404)
 def page_not_found(e):

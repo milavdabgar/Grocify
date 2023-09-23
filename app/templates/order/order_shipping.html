@@ -1,49 +1,41 @@
 <!-- cart.html -->
 {% extends 'base.html' %}
-
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shipping.css') }}">
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='styles/shipping.css') }}">
 {% endblock %}
-
-{% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/shipping.js') }}"></script>
-{% endblock %}
-
-{% block title %}
-    Grocify: Shipping Information
-{% endblock %}
-
-{% block content %}
-
-<div class="container2">
+{% block scripts %}<script src="{{ url_for('static', filename='scripts/shipping.js') }}"></script>{% endblock %}
+{% block title %}Grocify: Shipping Information{% endblock %}
+{% block app_content %}
+  <div class="container2">
     <div class="form-container">
       <h1>Add Shipping Information</h1>
       <form method="POST" action="/shipping">
         <label for="full_name">Full Name:</label>
-        <input type="text" id="full_name" name="full_name" required><br>
-
+        <input type="text" id="full_name" name="full_name" required>
+        <br>
         <label for="street_address">Street Address:</label>
-        <input type="text" id="street_address" name="street_address" required><br>
-
+        <input type="text" id="street_address" name="street_address" required>
+        <br>
         <label for="city">City:</label>
-        <input type="text" id="city" name="city" required><br>
-
+        <input type="text" id="city" name="city" required>
+        <br>
         <label for="state_province">State/Province:</label>
-        <input type="text" id="state_province" name="state_province" required><br>
-
+        <input type="text" id="state_province" name="state_province" required>
+        <br>
         <label for="postal_code">Postal Code:</label>
-        <input type="text" id="postal_code" name="postal_code" required><br>
-
+        <input type="text" id="postal_code" name="postal_code" required>
+        <br>
         <label for="country">Country:</label>
-        <input type="text" id="country" name="country" required><br>
-
+        <input type="text" id="country" name="country" required>
+        <br>
         <input type="submit" value="Submit">
       </form>
-      <form action="{{ url_for('order_routes.checkout') }}" method="POST">
+      <form action="{{ url_for("order_routes.checkout") }}" method="POST">
         <button type="submit">Checkout</button>
       </form>
     </div>
-
     <div class="info-container">
       <h2>Existing Shipping Information</h2>
       <table>
@@ -57,23 +49,22 @@
           <th>Delete</th>
         </tr>
         {% for ship in shipping_info %}
-        <tr>
-          <td>{{ ship.full_name }}</td>
-          <td>{{ ship.street_address }}</td>
-          <td>{{ ship.city }}</td>
-          <td>{{ ship.state_province }}</td>
-          <td>{{ ship.postal_code }}</td>
-          <td>{{ ship.country }}</td>
-          <td>
-            <form method="POST" action="/shipping">
-              <input type="hidden" name="delete_shipping" value="{{ ship[0] }}">
-              <input type="submit" value="Delete">
-            </form>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ ship.full_name }}</td>
+            <td>{{ ship.street_address }}</td>
+            <td>{{ ship.city }}</td>
+            <td>{{ ship.state_province }}</td>
+            <td>{{ ship.postal_code }}</td>
+            <td>{{ ship.country }}</td>
+            <td>
+              <form method="POST" action="/shipping">
+                <input type="hidden" name="delete_shipping" value="{{ ship[0] }}">
+                <input type="submit" value="Delete">
+              </form>
+            </td>
+          </tr>
         {% endfor %}
       </table>
     </div>
-</div>
-
+  </div>
 {% endblock %}
