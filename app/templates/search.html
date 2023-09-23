@@ -1,8 +1,8 @@
 {% extends "base-mb.html" %}
 {% block app_content %}
     <h1>{{ 'Search Results' }}</h1>
-    {% for post in products %}
-        {% include '_post.html' %}
+    {% for product in products %}
+        {% include 'product/product_view.html' %}
     {% endfor %}
     <nav aria-label="...">
         <ul class="pager">

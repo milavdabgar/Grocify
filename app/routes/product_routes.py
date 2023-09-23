@@ -103,46 +103,46 @@ def shop():
         return redirect(url_for("auth.login"))
 
 
-@bp.route("/search")
-def search():
-    if "email" in session:
-        # Get the search query from the request's query parameters
-        query = request.args.get("query")
+# @bp.route("/search")
+# def search():
+#     if "email" in session:
+#         # Get the search query from the request's query parameters
+#         query = request.args.get("query")
 
-        # Search for products matching the query and retrieve them as tuples
-        product_columns = [
-            getattr(Product, column_name)
-            for column_name in Product.__table__.columns.keys()
-        ]
-        products = (
-            db.session.query(*product_columns)
-            .filter(
-                db.or_(
-                    Product.name.ilike(f"%{query}%"),
-                    Product.category.ilike(f"%{query}%"),
-                    Product.description.ilike(f"%{query}%"),
-                )
-            )
-            .all()
-        )
+#         # Search for products matching the query and retrieve them as tuples
+#         product_columns = [
+#             getattr(Product, column_name)
+#             for column_name in Product.__table__.columns.keys()
+#         ]
+#         products = (
+#             db.session.query(*product_columns)
+#             .filter(
+#                 db.or_(
+#                     Product.name.ilike(f"%{query}%"),
+#                     Product.category.ilike(f"%{query}%"),
+#                     Product.description.ilike(f"%{query}%"),
+#                 )
+#             )
+#             .all()
+#         )
 
-        # checks items on the cart
-        cart_count = get_cart_count()
+#         # checks items on the cart
+#         cart_count = get_cart_count()
 
-        if session["email"] == "admin@grocify.com":
-            return render_template(
-                "product/product_search_admin.html",
-                products=products,
-                query=query,
-                cart_count=cart_count,
-            )
-        else:
-            # Render the template and pass the product data to it
-            return render_template(
-                "product/product_search.html",
-                products=products,
-                query=query,
-                cart_count=cart_count,
-            )
-    else:
-        return redirect(url_for("auth.login"))
+#         if session["email"] == "admin@grocify.com":
+#             return render_template(
+#                 "product/product_search_admin.html",
+#                 products=products,
+#                 query=query,
+#                 cart_count=cart_count,
+#             )
+#         else:
+#             # Render the template and pass the product data to it
+#             return render_template(
+#                 "product/product_search.html",
+#                 products=products,
+#                 query=query,
+#                 cart_count=cart_count,
+#             )
+#     else:
+#         return redirect(url_for("auth.login"))

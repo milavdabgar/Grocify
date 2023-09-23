@@ -1,13 +1,15 @@
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms import StringField, SubmitField
+from wtforms.validators import ValidationError, DataRequired, Email
 from app.models import User
 
 
 class EditProfileForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
     username = StringField("Username", validators=[DataRequired()])
-    about_me = TextAreaField("About me", validators=[Length(min=0, max=140)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone = StringField("Phone", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
     def __init__(self, original_username, *args, **kwargs):
@@ -25,11 +27,6 @@ class EmptyForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
-class PostForm(FlaskForm):
-    post = TextAreaField("Say something", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-
 class SearchForm(FlaskForm):
     q = StringField("Search", validators=[DataRequired()])
 
@@ -39,10 +36,3 @@ class SearchForm(FlaskForm):
         if "meta" not in kwargs:
             kwargs["meta"] = {"csrf": False}
         super(SearchForm, self).__init__(*args, **kwargs)
-
-
-class MessageForm(FlaskForm):
-    message = TextAreaField(
-        "Message", validators=[DataRequired(), Length(min=1, max=140)]
-    )
-    submit = SubmitField("Submit")

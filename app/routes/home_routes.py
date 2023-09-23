@@ -28,14 +28,3 @@ def admin_panel():
         return render_template('home/home_admin.html')
     else:
         return redirect(url_for('auth.login'))
-
-@bp.errorhandler(404)
-def page_not_found(e):
-    # note that we set the 404 status explicitly
-    return render_template("404.html"), 404
-
-
-@bp.errorhandler(403)
-def not_authorized(e):
-    # note that we set the 403 status explicitly
-    return render_template("403.html"), 403

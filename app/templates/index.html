@@ -1,13 +1,14 @@
 {% extends "base-mb.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <h1>{{ 'Hi, %(username)s!', username=current_user.username }}</h1>
+    {# <h1>{{ 'Hi, %(username)s!', username=current_user.username }}</h1> #}
+    <h1>Available Products on Grocify</h1>
     {% if form %}
         {{ wtf.quick_form(form) }}
         <br>
     {% endif %}
-    {% for post in products %}
-        {% include 'product/product_shop.html' %}
+    {% for product in products %}
+        {% include 'product/product_view.html' %}
     {% endfor %}
     <nav aria-label="...">
         <ul class="pager">
