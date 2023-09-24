@@ -51,8 +51,8 @@
         </nav>
         <div class="user">
           <div class="profile">
-            <a href="{{ url_for('main.user', username=current_user.username) }}"><i class="material-icons icon-large">account_circle</i>Account</a>
-            {# <a href="{{ url_for('main.user', username=current_user.username) }}">{{ 'Profile' }}</a> #}
+            <a href="{{ url_for('main.user', user_name=current_user.user_name) }}"><i class="material-icons icon-large">account_circle</i>Account</a>
+            {# <a href="{{ url_for('main.user', user_name=current_user.user_name) }}">{{ 'Profile' }}</a> #}
           </div>
         </div>
       </div>

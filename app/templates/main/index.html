@@ -1,0 +1,66 @@
+{% extends 'base-flaskr.html' %}
+{# Title of the Page #}
+{% block title %}WELCOME USER{% endblock %}
+{# should contain the brand button which redirects to user home #}
+{% block user_home %}
+    <a href="{{ url_for("main.index") }}" class="navbar-brand">
+        <img src="{{ url_for('static', filename='images/Brand-image.svg') }}"
+             height="40"
+             width="40">
+        GroceryStore
+    </a>
+{% endblock %}
+{# should contain the navigation options on a page on the navigation bar #}
+{% block navbar_options %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">Categories</a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="#">Categories</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Active Locations</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Our Seller Brands</a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+{# search bar for the page can be hidden or shown #}
+{% block nav_search %}
+    <form class="d-flex" role="search">
+        <input class="form-control me-2"
+               type="search"
+               placeholder="Search"
+               aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+{% endblock %}
+{# authentication options like signin, signout, etc #}
+{% block nav_auth_options %}
+    <div class="d-flex align-items-center px-3">
+        <a href="{{ url_for("auth.signin") }}"
+           type="button"
+           class="btn btn-dark px-3 me-2 text-decoration-none">Sign in</a>
+        <a href="{{ url_for("auth.signup") }}"
+           type="button"
+           class="btn btn-success me-3 text-decoration-none">Sign up</a>
+    </div>
+{% endblock %}
+{# MAIN content for the website #}
+{% block content %}{% endblock %}
+{% block footer_admin %}
+    <div class="text-end p-3">
+        <a href="{{ url_for("admin.admin_signin") }}"
+           class="text-decoration-none btn btn-outline-success">Admin SignIn</a>
+    </div>
+    {# <div class="text-end p-3">
+        <a href="{{ url_for("admin.admin_signup") }}"
+           class="text-decoration-none btn btn-outline-success">Admin SignUp</a>
+    </div> #}
+{% endblock %}

@@ -50,27 +50,32 @@ def create_app():
         order_routes,
     )
 
+
+    from app.auth import bp as auth_bp
+    from app.main import bp as main_bp
+    from app.api import bp as api_bp     
+    from app.errors import bp as errors_bp  
+
+    # from app.auth import bp as auth_bp    
+    # from app.main import bp as app_bp
+    from app.user import bp as user_bp
+    from app.admin import bp as admin_bp 
+
     # Blueprint registrations
     app.register_blueprint(home_routes.bp)
     app.register_blueprint(product_routes.bp)
     app.register_blueprint(cart_routes.bp)
     app.register_blueprint(order_routes.bp)
-
-    from app.errors import bp as errors_bp
-
+    
     app.register_blueprint(errors_bp)
-
-    from app.auth import bp as auth_bp
-
     app.register_blueprint(auth_bp, url_prefix="/auth")
-
-    from app.main import bp as main_bp
-
     app.register_blueprint(main_bp)
-
-    from app.api import bp as api_bp
-
     app.register_blueprint(api_bp, url_prefix="/api")
+    
+    # app.register_blueprint(app_bp)
+    # app.register_blueprint(auth_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(admin_bp)
 
     if os.getenv("ENV", "development") == "production":
         app.logger.info("Currently no production config is setup.")

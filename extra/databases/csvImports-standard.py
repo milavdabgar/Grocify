@@ -17,7 +17,7 @@ class User(db.Model):
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
+    contact = db.Column(db.String(20), nullable=False)
     
 class Product(db.Model):
     __tablename__ = 'Product'

@@ -1,5 +1,5 @@
 import base64
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from hashlib import md5
 import json
 import os
@@ -102,26 +102,32 @@ class PaginatedAPIMixin(object):
         return data
 
 
-user_products = db.Table(
-    "user_products",
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
-    db.Column("product_id", db.Integer, db.ForeignKey("product.id"), primary_key=True),
+UserProducts = db.Table(
+    "UserProducts",
+    db.Column("user_id", db.Integer, db.ForeignKey("User.id"), primary_key=True),
+    db.Column("product_id", db.Integer, db.ForeignKey("Product.id"), primary_key=True),
 )
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = "User"
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    phone = db.Column(db.String(20))
-    password_hash = db.Column(db.String(128))
+    full_name = db.Column(db.String(100))
+    user_name = db.Column(db.String(50), index=True, unique=True)
+    email = db.Column(db.String(100), index=True, unique=True, nullable=False)
+    contact = db.Column(db.String(15), unique=True)
+    password_hash = db.Column(db.String(500))
+    date_joined = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-    products = db.relationship("Product", secondary=user_products, backref="users")
+    products = db.relationship("Product", secondary=UserProducts, backref="users")
 
     def __repr__(self):
-        return "<User {}>".format(self.username)
+        """
+        Special method represents an object of User class when printed
+        """
+        return f"<User : {self.id} -> {self.full_name} ({self.user_name})>"
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -153,14 +159,14 @@ class User(UserMixin, db.Model):
     def to_dict(self, include_email=False):
         data = {
             "id": self.id,
-            "username": self.username,
+            "user_name": self.user_name,
         }
         if include_email:
             data["email"] = self.email
         return data
 
     def from_dict(self, data, new_user=False):
-        for field in ["username", "email", "about_me"]:
+        for field in ["user_name", "email", "full_name"]:
             if field in data:
                 setattr(self, field, data[field])
         if new_user and "password" in data:
@@ -192,16 +198,22 @@ def load_user(id):
 
 
 class Product(db.Model, SearchableMixin, PaginatedAPIMixin):
+    __tablename__ = "Product"
     __searchable__ = ["name", "description", "category"]
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Numeric(10, 2), nullable=False)
+    description = db.Column(db.String(500))
+    # price = db.Column(db.Numeric(10, 2), nullable=False)
     image = db.Column(db.String(255), nullable=False)
-    category = db.Column(db.String(255), nullable=False)
-    section_id = db.Column(db.Integer, db.ForeignKey("section.id"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    quantity = db.Column(db.Numeric(10, 2), nullable=True)
+    category = db.Column(db.Integer, db.ForeignKey("Category.id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    unit = db.Column(db.Integer, db.ForeignKey("MeasurementUnit.id"), nullable=False)
+    price_per_quantity = db.Column(db.Integer, nullable=False)
+    seller = db.Column(db.Integer, db.ForeignKey("Seller.id"), nullable=False)
+    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    expiration_date = db.Column(db.DateTime, nullable=False)
+    rating = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"))
 
     # def json(self):
     #     return {
@@ -222,18 +234,17 @@ class Product(db.Model, SearchableMixin, PaginatedAPIMixin):
         db.session.commit()
 
     def __repr__(self):
-        return "<Product: {}>".format(self.name)
-
-
-class Section(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+        """
+        Special method represents an object of Product class when printed
+        """
+        return f"<Product : {self.id} -> {self.name}>"
 
 
 class Shipping(db.Model):
+    __tablename__ = "Shipping"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id"), nullable=True, default=None
+        db.Integer, db.ForeignKey("User.id"), nullable=True, default=None
     )
     full_name = db.Column(db.String(255), nullable=True, default=None)
     street_address = db.Column(db.String(255), nullable=True, default=None)
@@ -244,32 +255,37 @@ class Shipping(db.Model):
 
 
 class Cart(db.Model):
+    __tablename__ = "Cart"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     shipping_id = db.Column(
-        db.Integer, db.ForeignKey("shipping.id"), nullable=True, default=None
+        db.Integer, db.ForeignKey("Shipping.id"), nullable=True, default=None
     )
 
 
 class Order(db.Model):
+    __tablename__ = "Order"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
     status = db.Column(db.String(255), nullable=False, default="processing")
     total = db.Column(db.Numeric(10, 2), nullable=False)
 
 
 class CartProduct(db.Model):
-    cart_id = db.Column(db.Integer, db.ForeignKey("cart.id"), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), primary_key=True)
+    __tablename__ = "CartProduct"
+    cart_id = db.Column(db.Integer, db.ForeignKey("Cart.id"), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
 
 
 class OrderProduct(db.Model):
-    order_id = db.Column(db.Integer, db.ForeignKey("order.id"), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), primary_key=True)
+    __tablename__ = "OrderProduct"
+    order_id = db.Column(db.Integer, db.ForeignKey("Order.id"), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), primary_key=True)
 
 
 class Admin(db.Model):
     __tablename__ = "Admin"
+
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(100))
     user_name = db.Column(db.String(50), unique=True)
@@ -279,3 +295,118 @@ class Admin(db.Model):
 
     def __repr__(self):
         return f"<Admin : {self.id} -> {self.user_name}>"
+
+
+class City(db.Model):
+    __tablename__ = "City"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<City : {self.id} -> {self.name}>"
+
+
+class State(db.Model):
+    __tablename__ = "State"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<State : {self.id} -> {self.name}>"
+
+
+class Country(db.Model):
+    __tablename__ = "Country"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<Country : {self.id} -> {self.name}>"
+
+
+class Location(db.Model):
+    __tablename__ = "Location"
+
+    id = db.Column(db.Integer, primary_key=True)
+    city_id = db.Column(db.Integer, db.ForeignKey("City.id"), nullable=False)
+    state_id = db.Column(db.Integer, db.ForeignKey("State.id"), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey("Country.id"), nullable=False)
+
+
+class PrimaryAddress(db.Model):
+    __tablename__ = "PrimaryAddress"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    address_id = db.Column(db.Integer, db.ForeignKey("Address.id"), nullable=False)
+
+    def __repr__(self):
+        return f"<PrimaryAddress : {self.user_id} -> {self.address_id}>"
+
+
+class Address(db.Model):
+    __tablename__ = "Address"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50))
+    house_number = db.Column(db.String(50))
+    line_1 = db.Column(db.String(200), nullable=False)
+    line_2 = db.Column(db.String(200))
+    pincode = db.Column(db.String(6), nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey("Location.id"), nullable=False)
+
+    def __repr__(self):
+        return f"<Address : {self.id} -> {self.user_id}>"
+
+
+class Category(db.Model):
+    __tablename__ = "Category"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500))
+
+    def __repr__(self):
+        return f"<Category : {self.id} -> {self.name}>"
+
+
+class MeasurementUnit(db.Model):
+    __tablename__ = "MeasurementUnit"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    shorthand = db.Column(db.String(10), unique=True, nullable=True)
+
+    def __repr__(self):
+        return f"<MeasurementUnit : {self.id} -> {self.name} ({self.shorthand})>"
+
+
+class Rating(db.Model):
+    __tablename__ = "Rating"
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("Product.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    stars = db.Column(db.Integer, nullable=False)
+    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    description = db.Column(db.String(500))
+
+    def __repr__(self):
+        return f"<Rating : {self.product_id} -> {self.stars}>"
+
+
+class Seller(db.Model):
+    __tablename__ = "Seller"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    seller_contact = db.Column(db.String(20), nullable=False)
+    seller_email = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<Seller : {self.id} -> {self.name}>"

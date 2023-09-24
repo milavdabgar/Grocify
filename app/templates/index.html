@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    {# <h1>{{ 'Hi, %(username)s!', username=current_user.username }}</h1> #}
+    {# <h1>{{ 'Hi, %(user_name)s!', user_name=current_user.user_name }}</h1> #}
     <h1>Available Products on Grocify</h1>
     {% if form %}
         {{ wtf.quick_form(form) }}

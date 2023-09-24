@@ -16,7 +16,6 @@ class ProductForm(FlaskForm):
     image = StringField("Image", validators=[InputRequired()])
     category = StringField("Category", validators=[InputRequired()])
     quantity = IntegerField("Quantity", validators=[InputRequired()])
-    section_id = IntegerField("Section ID ", validators=[InputRequired()])
     submit = SubmitField("Submit")
 
 
@@ -53,7 +52,6 @@ def add_product():
             image=data["image"],
             category=data["category"],
             quantity=data["quantity"],
-            section_id=data["section_id"],
         )  # adjust the fields according to your Product class
         product.save_to_db()
         return redirect(url_for("product_routes.product_list"))

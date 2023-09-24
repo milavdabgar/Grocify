@@ -46,10 +46,10 @@ def get_followed(id):
 @bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json() or {}
-    if 'username' not in data or 'email' not in data or 'password' not in data:
-        return bad_request('must include username, email and password fields')
-    if User.query.filter_by(username=data['username']).first():
-        return bad_request('please use a different username')
+    if 'user_name' not in data or 'email' not in data or 'password' not in data:
+        return bad_request('must include user_name, email and password fields')
+    if User.query.filter_by(user_name=data['user_name']).first():
+        return bad_request('please use a different user_name')
     if User.query.filter_by(email=data['email']).first():
         return bad_request('please use a different email address')
     user = User()
@@ -69,9 +69,9 @@ def update_user(id):
         abort(403)
     user = User.query.get_or_404(id)
     data = request.get_json() or {}
-    if 'username' in data and data['username'] != user.username and \
-            User.query.filter_by(username=data['username']).first():
-        return bad_request('please use a different username')
+    if 'user_name' in data and data['user_name'] != user.user_name and \
+            User.query.filter_by(user_name=data['user_name']).first():
+        return bad_request('please use a different user_name')
     if 'email' in data and data['email'] != user.email and \
             User.query.filter_by(email=data['email']).first():
         return bad_request('please use a different email address')

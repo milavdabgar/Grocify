@@ -1,0 +1,109 @@
+{# SIGN UP PAGE #}
+{% extends 'base-flaskr.html' %}
+{% block title %}SIGN UP{% endblock %}
+{# should contain the brand button which redirects to user home #}
+{% block user_home %}
+    <a href="{{ url_for("main.index") }}" class="navbar-brand">
+        <img src="{{ url_for('static', filename='images/Brand-image.svg') }}"
+             height="40"
+             width="40">
+        GroceryStore
+    </a>
+{% endblock %}
+{# should contain the navigation options on a page on the navigation bar #}
+{% block navbar_options %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">Categories</a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="#">Categories</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Active Locations</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Our Seller Brands</a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+{# search bar for the page can be hidden or shown #}
+{% block nav_search %}
+    <form class="d-flex" role="search">
+        <input class="form-control me-2"
+               type="search"
+               placeholder="Search"
+               aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+{% endblock %}
+{# authentication options like signin, signout, etc #}
+{% block nav_auth_options %}
+    <div class="d-flex align-items-center px-3">
+        <a href="{{ url_for("auth.signin") }}"
+           type="button"
+           class="btn btn-dark px-3 me-2 text-decoration-none">Sign in</a>
+    </div>
+{% endblock %}
+{% block content %}
+    <h1 class="p-3 text-center">User Sign Up</h1>
+    <hr>
+    <form action="{{ url_for("admin.admin_signup") }}" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {# Name row #}
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-4">{{ form.name(size=50, placeholder='Full Name') }}</div>
+            </div>
+            {# Username row #}
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-4">{{ form.username(size=50, placeholder='Username') }}</div>
+            </div>
+            {# Email row #}
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-4">{{ form.email(size=50, placeholder='Email') }}</div>
+            </div>
+            {# Contact row #}
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-4">{{ form.contact(size=50, placeholder='Contact Number') }}</div>
+            </div>
+            {# Password row #}
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-4">{{ form.password_hash(size=50, placeholder='Password') }}</div>
+            </div>
+            {# Flashing the error message if Login fails #}
+            {# flashing ERROR messages #}
+            {% with messages = get_flashed_messages(category_filter=["ERROR"]) %}
+                {% if messages %}
+                    <ul class="container">
+                        {% for message in messages %}<div class="alert alert-danger align-center" role="alert">{{ message }}</div>{% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {# flashing SUCCESS messages #}
+            {% with messages = get_flashed_messages(category_filter=["SUCCESS"]) %}
+                {% if messages %}
+                    <ul class="container">
+                        {% for message in messages %}
+                            <div class="alert alert-success align-center" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {# Submit row #}
+            <div class="row py-2 text-center">
+                <div class="col">{{ form.submit() }}</div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block footer_admin %}
+    <div class="text-end p-3">
+        <a href="{{ url_for("admin.admin_signin") }}"
+           class="text-decoration-none btn btn-outline-success">Admin</a>
+    </div>
+{% endblock %}

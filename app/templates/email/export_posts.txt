@@ -1,4 +1,4 @@
-Dear {{ user.username }},
+Dear {{ user.user_name }},
 
 Please find attached the archive of your products that you requested.
 

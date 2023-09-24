@@ -22,40 +22,40 @@ def before_request():
 @bp.route("/index", methods=["GET", "POST"])
 @login_required
 def index():
-    form = ProductForm()
-    if request.method == "POST" and form.validate_on_submit():
-        data = form.data
-        product = Product(
-            name=data["name"],
-            description=data["description"],
-            price=data["price"],
-            image=data["image"],
-            category=data["category"],
-            quantity=data["quantity"],
-            section_id=data["section_id"],
-            user_id=current_user.id,
-        )  # adjust the fields according to your Product class
-        product.save_to_db()
-        flash("Your product is now live!")
-        return redirect(url_for("main.index"))
-    page = request.args.get("page", 1, type=int)
-    products = current_user.listed_products().paginate(
-        page=page, per_page=current_app.config["PRODUCTS_PER_PAGE"], error_out=False
-    )
-    next_url = (
-        url_for("main.index", page=products.next_num) if products.has_next else None
-    )
-    prev_url = (
-        url_for("main.index", page=products.prev_num) if products.has_prev else None
-    )
-    return render_template(
-        "index.html",
-        title="Home",
-        form=form,
-        products=products.items,
-        next_url=next_url,
-        prev_url=prev_url,
-    )
+    return render_template("main/index.html")
+    # form = ProductForm()
+    # if request.method == "POST" and form.validate_on_submit():
+    #     data = form.data
+    #     product = Product(
+    #         name=data["name"],
+    #         description=data["description"],
+    #         price=data["price"],
+    #         image=data["image"],
+    #         category=data["category"],
+    #         quantity=data["quantity"],
+    #         user_id=current_user.id,
+    #     )  # adjust the fields according to your Product class
+    #     product.save_to_db()
+    #     flash("Your product is now live!")
+    #     return redirect(url_for("main.index"))
+    # page = request.args.get("page", 1, type=int)
+    # products = current_user.listed_products().paginate(
+    #     page=page, per_page=current_app.config["PRODUCTS_PER_PAGE"], error_out=False
+    # )
+    # next_url = (
+    #     url_for("main.index", page=products.next_num) if products.has_next else None
+    # )
+    # prev_url = (
+    #     url_for("main.index", page=products.prev_num) if products.has_prev else None
+    # )
+    # return render_template(
+    #     "index.html",
+    #     title="Home",
+    #     form=form,
+    #     products=products.items,
+    #     next_url=next_url,
+    #     prev_url=prev_url,
+    # )
 
 
 @bp.route("/explore")
@@ -80,10 +80,10 @@ def explore():
     )
 
 
-@bp.route("/user/<username>")
+@bp.route("/user/<user_name>")
 @login_required
-def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
+def user(user_name):
+    user = User.query.filter_by(user_name=user_name).first_or_404()
     page = request.args.get("page", 1, type=int)
 
     products = current_user.listed_products().paginate(
@@ -91,12 +91,12 @@ def user(username):
     )
 
     next_url = (
-        url_for("main.user", username=user.username, page=products.next_num)
+        url_for("main.user", user_name=user.user_name, page=products.next_num)
         if products.has_next
         else None
     )
     prev_url = (
-        url_for("main.user", username=user.username, page=products.prev_num)
+        url_for("main.user", user_name=user.user_name, page=products.prev_num)
         if products.has_prev
         else None
     )
@@ -111,10 +111,10 @@ def user(username):
     )
 
 
-@bp.route("/user/<username>/popup")
+@bp.route("/user/<user_name>/popup")
 @login_required
-def user_popup(username):
-    user = User.query.filter_by(username=username).first_or_404()
+def user_popup(user_name):
+    user = User.query.filter_by(user_name=user_name).first_or_404()
     form = EmptyForm()
     return render_template("user_popup.html", user=user, form=form)
 
@@ -122,20 +122,20 @@ def user_popup(username):
 @bp.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
-    form = EditProfileForm(current_user.username)
+    form = EditProfileForm(current_user.user_name)
     if form.validate_on_submit():
         current_user.name = form.name.data
-        current_user.username = form.username.data
+        current_user.user_name = form.user_name.data
         current_user.email = form.email.data
-        current_user.phone = form.phone.data
+        current_user.contact = form.contact.data
         db.session.commit()
         flash("Your changes have been saved.")
         return redirect(url_for("main.edit_profile"))
     elif request.method == "GET":
         form.name.data = current_user.name
-        form.username.data = current_user.username
+        form.user_name.data = current_user.user_name
         form.email.data = current_user.email
-        form.phone.data = current_user.phone
+        form.contact.data = current_user.contact
     return render_template("edit_profile.html", title="Edit Profile", form=form)
 
 

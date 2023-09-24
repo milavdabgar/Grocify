@@ -12,7 +12,6 @@ class ProductResource(Resource):
     parser.add_argument("image", type=str, required=True, help="Image is required.")
     parser.add_argument("category", type=str, required=True, help="Category is required.")
     parser.add_argument("quantity", type=int, required=True, help="Quantity is required.")
-    parser.add_argument("section_id", type=int, required=True, help="Section ID is required.")
 
     def get(self, product_id):
         product = Product.query.get(product_id)
@@ -41,7 +40,6 @@ class ProductResource(Resource):
                 product.image = data["image"]
                 product.category = data["category"]
                 product.quantity = data["quantity"]
-                product.section_id = data["section_id"]
                 product.save_to_db()
                 return product.json()
             return {"message": "Product not found"}, 404
