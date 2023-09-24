@@ -6,6 +6,7 @@ from wtforms.validators import InputRequired
 from app.models import Product
 from app.routes.cart_routes import get_cart_count
 from app import db
+from flask_login import current_user, login_required
 
 
 class ProductForm(FlaskForm):
@@ -23,12 +24,14 @@ bp = Blueprint("product_routes", __name__)
 
 
 @bp.route("/product_list")
+@login_required
 def product_list():
     products = Product.query.all()
     return render_template("product/product_manage.html", products=products)
 
 
 @bp.route("/products/<int:product_id>")
+@login_required
 def show_product(product_id):
     product = Product.query.get(product_id)
     if product:
@@ -37,7 +40,7 @@ def show_product(product_id):
 
 
 @bp.route("/products/add", methods=["GET", "POST"])
-# @login_required
+@login_required
 # @roles_required('admin')
 def add_product():
     form = ProductForm()
@@ -58,7 +61,7 @@ def add_product():
 
 
 @bp.route("/products/edit/<int:product_id>", methods=["GET", "POST"])
-# @login_required
+@login_required
 # @roles_required('admin')
 def edit_product(product_id):
     product = Product.query.get(product_id)
@@ -73,7 +76,7 @@ def edit_product(product_id):
 
 
 @bp.route("/products/delete/<int:product_id>", methods=["GET", "POST"])
-# @login_required
+@login_required
 # @roles_required('admin')
 def delete_product(product_id):
     product = Product.query.get(product_id)
@@ -87,62 +90,15 @@ def delete_product(product_id):
 
 
 @bp.route("/shop")
+@login_required
 def shop():
-    if "email" in session:
-        columns = [
-            getattr(Product, column_name)
-            for column_name in Product.__table__.columns.keys()
-        ]
-        products = db.session.query(*columns).all()
+    columns = [
+        getattr(Product, column_name)
+        for column_name in Product.__table__.columns.keys()
+    ]
+    products = db.session.query(*columns).all()
 
-        cart_count = get_cart_count()
-        return render_template(
-            "product/product_shop.html", products=products, cart_count=cart_count
-        )
-    else:
-        return redirect(url_for("auth.login"))
-
-
-# @bp.route("/search")
-# def search():
-#     if "email" in session:
-#         # Get the search query from the request's query parameters
-#         query = request.args.get("query")
-
-#         # Search for products matching the query and retrieve them as tuples
-#         product_columns = [
-#             getattr(Product, column_name)
-#             for column_name in Product.__table__.columns.keys()
-#         ]
-#         products = (
-#             db.session.query(*product_columns)
-#             .filter(
-#                 db.or_(
-#                     Product.name.ilike(f"%{query}%"),
-#                     Product.category.ilike(f"%{query}%"),
-#                     Product.description.ilike(f"%{query}%"),
-#                 )
-#             )
-#             .all()
-#         )
-
-#         # checks items on the cart
-#         cart_count = get_cart_count()
-
-#         if session["email"] == "admin@grocify.com":
-#             return render_template(
-#                 "product/product_search_admin.html",
-#                 products=products,
-#                 query=query,
-#                 cart_count=cart_count,
-#             )
-#         else:
-#             # Render the template and pass the product data to it
-#             return render_template(
-#                 "product/product_search.html",
-#                 products=products,
-#                 query=query,
-#                 cart_count=cart_count,
-#             )
-#     else:
-#         return redirect(url_for("auth.login"))
+    cart_count = get_cart_count()
+    return render_template(
+        "product/product_shop.html", products=products, cart_count=cart_count
+    )

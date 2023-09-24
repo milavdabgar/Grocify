@@ -1,16 +1,19 @@
 <!-- cart.html -->
 {% extends 'base.html' %}
 {% block styles %}
+    {{ super() }}
     <link rel="stylesheet"
           type="text/css"
           href="{{ url_for('static', filename='styles/shop.css') }}">
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>
+    {{ super() }}
+{% endblock %}
 {% block title %}Grocify: Shop{% endblock %}
 {% block app_content %}
     <div class="shop-container">
         <div class="category-container">
-            <h3>Categories</h3>
             <ul id="category-list">
                 <li data-category="all" class="active">All</li>
                 <li data-category="Fruit">Fruits</li>

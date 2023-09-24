@@ -12,6 +12,9 @@
     <link rel="stylesheet"
           type="text/css"
           href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet"
+          type="text/css"
+          href="{{ url_for('static', filename='styles/footer.css') }}">
     <script src="{{ url_for('static', filename='scripts/header.js') }}"></script>
     {% block styles %}{% endblock %}
     {% block scripts %}{% endblock %}
@@ -34,7 +37,10 @@
         <nav class="show-menu">
           <ul>
             <li>
-              <a href="{{ url_for("product_routes.product_list") }}">Home</a>
+              <a href="{{ url_for("home_routes.dashboard") }}">Home</a>
+            </li>
+            <li>
+              <a href="{{ url_for("product_routes.shop") }}">Shop</a>
             </li>
             <li>
               <form action="/search" method="GET">
@@ -44,15 +50,19 @@
                 </button>
               </form>
             </li>
-            <a href="{{ url_for("product_routes.add_product") }}">
-              <button>Add New Product</button>
-            </a>
           </ul>
         </nav>
         <div class="user">
           <div class="profile">
-            <a href="{{ url_for('main.user', username=current_user.username) }}"><i class="material-icons icon-large">account_circle</i>Account</a>
-            {# <a href="{{ url_for('main.user', username=current_user.username) }}">{{ 'Profile' }}</a> #}
+            <a href="{{ url_for('main.user', username=current_user.username) }}"><i class="material-icons icon-large">account_circle</i>Profile</a>
+          </div>
+          <div class="cart">
+            <a href="{{ url_for("cart_routes.cart") }}">
+              <i class="material-icons">shopping_cart</i>
+              {% if cart_count is defined %}
+                {% if cart_count > 0 %}<span id="cart-count">{{ cart_count }}</span>{% endif %}
+              {% endif %}
+            </a>
           </div>
         </div>
       </div>
@@ -60,6 +70,5 @@
     <!-- Core Block content starts here -->
     {% block app_content %}{% endblock %}
     <!-- Core Block content ends here -->
-    <!-- Common footer content goes here -->
   </body>
 </html>

@@ -1,16 +1,14 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
 from app.models import User, Order, OrderProduct, Product, Shipping, Cart, CartProduct
 from app.routes.cart_routes import get_cart_count
+from flask_login import current_user, login_required
 
 bp = Blueprint('order_routes', __name__)
 
 @bp.route('/shipping', methods=['GET', 'POST'])
+@login_required
 def shipping():
-    # Check if the user is authenticated
-    if 'email' not in session:
-        return redirect(url_for('auth.login'))
-
     if request.method == 'POST':
         if 'delete_shipping' in request.form:
             # Delete shipping information
@@ -31,7 +29,7 @@ def shipping():
             country = request.form.get('country')
 
             # Retrieve the user's ID
-            user = User.query.filter_by(email=session['email']).first()
+            user = User.query.filter_by(email=current_user.email).first()
 
             # Insert the shipping information into the shipping table
             shipping = Shipping(user_id=user.id, full_name=full_name, street_address=street_address,
@@ -42,7 +40,7 @@ def shipping():
             # Retrieve shipping info from database
             shipping_columns = [getattr(Shipping, column_name) for column_name in Shipping.__table__.columns.keys()]   
             shipping_info = db.session.query(*shipping_columns).join(User).filter(
-                User.email == session['email']
+                User.email == current_user.email
             ).all()
 
             # redirect the user back to the shipping page
@@ -52,24 +50,21 @@ def shipping():
     # Retrieve shipping info from database
     shipping_columns = [getattr(Shipping, column_name) for column_name in Shipping.__table__.columns.keys()]   
     shipping_info = db.session.query(*shipping_columns).join(User).filter(
-        User.email == session['email']
+        User.email == current_user.email
     ).all()
 
     return render_template('order/order_shipping.html', shipping_info=shipping_info)
 
 @bp.route('/checkout', methods=['GET', 'POST'])
+@login_required
 def checkout():
-    # Check if the user is authenticated
-    if 'email' not in session:
-        return redirect(url_for('auth.login'))
-
     # Retrieve cart data for the user from the database
     # Retrieve cart data for the user from the database 
     cart_products = db.session.query(Product.id, Product.name, Product.description, Product.price, Product.image, Product.category) \
         .join(CartProduct, CartProduct.product_id == Product.id) \
         .join(Cart, CartProduct.cart_id == Cart.id) \
         .join(User, Cart.user_id == User.id) \
-        .filter(User.email == session['email']) \
+        .filter(User.email == current_user.email) \
         .all()
 
     # cart_product_tuples = [tuple(item) for item in cart_products]
@@ -79,12 +74,12 @@ def checkout():
         .join(CartProduct, Product.id == CartProduct.product_id)\
         .join(Cart, CartProduct.cart_id == Cart.id)\
         .join(User, Cart.user_id == User.id)\
-        .filter(User.email == session['email'])\
+        .filter(User.email == current_user.email)\
         .scalar()
 
     shipping_columns = [getattr(Shipping, column_name) for column_name in Shipping.__table__.columns.keys()]   
     shipping_info = db.session.query(*shipping_columns).join(User).filter(
-        User.email == session['email']
+        User.email == current_user.email
     ).all()
     
     # Render the template and pass the cart data to it
@@ -94,13 +89,11 @@ def checkout():
                            shipping_info=shipping_info)
 
 @bp.route('/place_order', methods=['POST'])
+@login_required
 def place_order():
-    # Check if the user is authenticated
-    if 'email' not in session:
-        return redirect(url_for('auth.login'))
 
     # Retrieve the user's ID
-    user_id = db.session.query(User.id).filter(User.email == session['email']).scalar()
+    user_id = db.session.query(User.id).filter(User.email == current_user.email).scalar()
 
     # Retrieve the user's cart ID
     cart_id = db.session.query(Cart.id).filter(Cart.user_id == user_id).scalar()
@@ -132,11 +125,8 @@ def place_order():
     return redirect(url_for('order_routes.order_confirmation', order_id=order.id))
 
 @bp.route('/order_confirmation/<int:order_id>')
+@login_required
 def order_confirmation(order_id):
-    # Check if the user is authenticated
-    if 'email' not in session:
-        return redirect(url_for('auth.login'))
-
     # Retrieve the order details using Flask SQLAlchemy
     order_products = db.session.query(
         Order.id, Product.name, Product.description, Product.price,
@@ -144,7 +134,7 @@ def order_confirmation(order_id):
     ).join(OrderProduct, Order.id == OrderProduct.order_id).join(
         Product, OrderProduct.product_id == Product.id
     ).join(User, Order.user_id == User.id).filter(
-        User.email == session['email'], Order.id == order_id
+        User.email == current_user.email, Order.id == order_id
     ).all()
     
     # Calculate the total price of the order
@@ -152,14 +142,14 @@ def order_confirmation(order_id):
         join(OrderProduct, OrderProduct.product_id == Product.id).\
         join(Order, Order.id == OrderProduct.order_id).\
         join(User, User.id == Order.user_id).\
-        filter(User.email == session['email']).\
+        filter(User.email == current_user.email).\
         filter(Order.id == order_id).\
         scalar()
     
     # Retrieve shipping info from database
     shipping_columns = [getattr(Shipping, column_name) for column_name in Shipping.__table__.columns.keys()]   
     shipping_info = db.session.query(*shipping_columns).join(User).filter(
-        User.email == session['email']
+        User.email == current_user.email
     ).all()
     
     # Close the session

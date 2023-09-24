@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from app.routes.cart_routes import get_cart_count
+from flask_login import current_user, login_required
 
 bp = Blueprint('home_routes', __name__)
 
@@ -9,10 +10,11 @@ def landing():
     return  render_template('home/home_landing.html', images=images)
 
 @bp.route('/dashboard')
+@login_required
 def dashboard():
     # Check if the user is authenticated
     if 'email' in session:
-        if session['email'] == 'admin@grocify.com':
+        if current_user.email == 'admin@grocify.com':
             return redirect(url_for('home_routes.admin_panel'))
         else:
             # Retrieve the cart count using SQLAlchemy
@@ -22,9 +24,10 @@ def dashboard():
         return redirect(url_for('auth.login'))
 
 @bp.route('/admin', methods=['GET'])
+@login_required
 def admin_panel():
     # Check if the user is authenticated as an admin
-    if 'email' in session and session['email'] == 'admin@grocify.com':
+    if 'email' in session and current_user.email == 'admin@grocify.com':
         return render_template('home/home_admin.html')
     else:
         return redirect(url_for('auth.login'))

@@ -1,31 +1,33 @@
 {% extends 'base.html' %}
 {% block styles %}
-     <link rel="stylesheet"
-           type="text/css"
-           href="{{ url_for('static', filename='styles/common.css') }}">
+  {{ super() }}
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='styles/common.css') }}">
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='scripts/imageSlider.js') }}"></script>
+  {{ super() }}
+{% endblock %}
 {% block title %}Grocify Home{% endblock %}
 {% block app_content %}
-     <section>
-          <div class="slideshow-container">
-               <img class="slides"
-                    src="{{ url_for('static', filename='images/banner1.jpg') }}">
-               <img class="slides"
-                    src="{{ url_for('static', filename='images/banner2.jpg') }}">
-               <img class="slides"
-                    src="{{ url_for('static', filename='images/banner3.jpg') }}">
-               <img class="slides"
-                    src="{{ url_for('static', filename='images/banner4.jpg') }}">
-               <img class="slides"
-                    src="{{ url_for('static', filename='images/banner5.jpg') }}">
-          </div>
-     </section>
+  <section>
+    <div class="slideshow-container">
+      <img class="slides"
+           src="{{ url_for('static', filename='images/banner1.jpg') }}">
+      <img class="slides"
+           src="{{ url_for('static', filename='images/banner2.jpg') }}">
+      <img class="slides"
+           src="{{ url_for('static', filename='images/banner3.jpg') }}">
+      <img class="slides"
+           src="{{ url_for('static', filename='images/banner4.jpg') }}">
+      <img class="slides"
+           src="{{ url_for('static', filename='images/banner5.jpg') }}">
+    </div>
+  </section>
 {% endblock %}
-
-
 {# 
-{% extends 'base-mb.html' %}
+{% extends 'base.html' %}
 
 {% block app_content %}
 <div id="myCarousel" class="carousel slide" data-ride="carousel">

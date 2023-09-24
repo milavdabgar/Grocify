@@ -15,21 +15,14 @@ from app.search import add_to_index, remove_from_index, query_index
 class SearchableMixin(object):
     @classmethod
     def search_db(cls, query, page, per_page):
-        object_columns = [
-            getattr(cls, column_name) for column_name in cls.__table__.columns.keys()
-        ]
-        objects = (
-            db.session.query(*object_columns)
-            .filter(
-                db.or_(
-                    *[
-                        getattr(cls, field_name).ilike(f"%{query}%")
-                        for field_name in cls.__searchable__
-                    ]
-                )
+        objects = cls.query.filter(
+            db.or_(
+                *[
+                    getattr(cls, field_name).ilike(f"%{query}%")
+                    for field_name in cls.__searchable__
+                ]
             )
-            .all()
-        )
+        ).all()
 
         total = len(objects)
 
@@ -275,57 +268,14 @@ class OrderProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"), primary_key=True)
 
 
-# from flask_security import UserMixin, RoleMixin
-# from flask_sqlalchemy import Model
+class Admin(db.Model):
+    __tablename__ = "Admin"
+    id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(100))
+    user_name = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(100), unique=True)
+    contact = db.Column(db.String(15), unique=True)
+    password_hash = db.Column(db.String(500))
 
-# class CRUDMixin(Model):
-#     @classmethod
-#     def create(cls, **kwargs):
-#         instance = cls(**kwargs)
-#         db.session.add(instance)
-#         db.session.commit()
-#         return instance
-
-#     @classmethod
-#     def read(cls, id):
-#         return cls.query.get(id)
-
-#     def update(self, **kwargs):
-#         for key, value in kwargs.items():
-#             setattr(self, key, value)
-#         db.session.commit()
-
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
-
-
-# roles_users = db.Table(
-#     "roles_users",
-#     db.Column("user_id", db.Integer(), db.ForeignKey("User.id")),
-#     db.Column("role_id", db.Integer(), db.ForeignKey("Role.id")),
-# )
-
-# class User(db.Model, UserMixin, CRUDMixin):
-#     __tablename__ = "User"
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     name = db.Column(db.String(255), nullable=False)
-#     email = db.Column(db.String(255), nullable=False, unique=True)
-#     password = db.Column(db.String(255), nullable=False)
-#     phone = db.Column(db.String(20), nullable=False)
-# fs_uniquifier = db.Column(db.String(64), unique=True)
-# role_id = db.Column(db.Integer, db.ForeignKey("Role.id"), nullable=False)
-# roles = db.relationship(
-#     "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
-# )
-
-
-# class Role(db.Model, RoleMixin, CRUDMixin):
-#     __tablename__ = "Role"
-#     id = db.Column(db.Integer(), primary_key=True)
-#     name = db.Column(db.String(80), unique=True)
-#     description = db.Column(db.String(255))
-
-# @login.user_loader
-# def load_user(id):
-#     return User.query.get(int(id))
+    def __repr__(self):
+        return f"<Admin : {self.id} -> {self.user_name}>"

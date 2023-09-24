@@ -1,12 +1,13 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g, current_app, session
+from flask import render_template, flash, redirect, url_for, request, g, current_app
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import EditProfileForm, EmptyForm, SearchForm
 from app.models import User, Product
 from app.main import bp
 from app.api.products_api import ProductForm
-from app.routes.cart_routes import get_cart_count
+
+# from app.routes.cart_routes import get_cart_count
 
 
 @bp.before_app_request
@@ -20,9 +21,6 @@ def before_request():
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
 @login_required
-# def index():
-#     products = Product.query.all()
-#     return render_template('product/product_shop.html', products=products)
 def index():
     form = ProductForm()
     if request.method == "POST" and form.validate_on_submit():
@@ -87,10 +85,11 @@ def explore():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get("page", 1, type=int)
-    # products = user.products
-    products = user.products.order_by(Product.name.desc()).paginate(
+
+    products = current_user.listed_products().paginate(
         page=page, per_page=current_app.config["PRODUCTS_PER_PAGE"], error_out=False
     )
+
     next_url = (
         url_for("main.user", username=user.username, page=products.next_num)
         if products.has_next
@@ -125,7 +124,7 @@ def user_popup(username):
 def edit_profile():
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
-        current_user.name = form.username.data
+        current_user.name = form.name.data
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.phone = form.phone.data
@@ -154,7 +153,7 @@ def search():
     else:
         products, total = Product.search_db(
             g.search_form.q.data, page, current_app.config["PRODUCTS_PER_PAGE"]
-        )              
+        )
     next_url = (
         url_for("main.search", q=g.search_form.q.data, page=page + 1)
         if total > page * current_app.config["PRODUCTS_PER_PAGE"]

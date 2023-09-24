@@ -10,16 +10,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from elasticsearch import Elasticsearch
 from flask_restful import Api
-from app.config import Config, LocalDevelopmentConfig, TestingConfig
-
-# from application.extensions import db
-
-
-# logging.basicConfig(
-#     filename="debug.log",
-#     level=logging.DEBUG,
-#     format=f"%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s",
-# )
+from app.config import LocalDevelopmentConfig, TestingConfig
 
 
 db = SQLAlchemy()
@@ -53,7 +44,6 @@ def create_app():
     api = Api(app)
 
     from app.routes import (
-        auth_routes,
         home_routes,
         product_routes,
         cart_routes,
@@ -61,7 +51,6 @@ def create_app():
     )
 
     # Blueprint registrations
-    app.register_blueprint(auth_routes.bp)
     app.register_blueprint(home_routes.bp)
     app.register_blueprint(product_routes.bp)
     app.register_blueprint(cart_routes.bp)
